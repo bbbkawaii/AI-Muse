@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星际穿越：控制台</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+        canvas { display: block; }
+        #input_video { display: none; }
+        
+        /* --- UI 容器 --- */
+        #hud {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* 穿透点击，让鼠标能操作 GUI */
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 20px; box-sizing: border-box;
+            z-index: 10;
+            transition: opacity 0.5s; /* 隐藏时的过渡动画 */
+        }
+
+        /* 顶部标题栏 */
+        .top-bar { display: flex; justify-content: space-between; align-items: flex-start; }
+        .bottom-bar { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px;}
+
+        h1 { margin: 0; color: #fff; font-size: 18px; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5); font-weight: 300; }
+        .sub-text { font-size: 10px; color: #00ff88; margin-top: 5px; opacity: 0.8; letter-spacing: 1px; }
+
+        /* 手势状态指示器 */
+        #hand-status {
+            position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+            color: #ff3366; font-size: 12px; font-weight: bold; font-family: monospace;
+            text-shadow: 0 0 5px #ff3366;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 15px; border: 1px solid rgba(255,51,102,0.3);
+        }
+        #hand-status.active { 
+            color: #00ff88; text-shadow: 0 0 10px #00ff88; border-color: rgba(0,255,136,0.5);
+        }
+
+        /* 手势指南图标 */
+        .gesture-guide {
+            display: flex; gap: 30px;
+            background: rgba(10, 20, 30, 0.7);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+            padding: 12px 30px; border-radius: 30px;
+            backdrop-filter: blur(8px);
+        }
+        .g-item { text-align: center; opacity: 0.5; transition: 0.3s; color: #fff; }
+        .g-item.active { opacity: 1; transform: scale(1.1); color: #00ff88; text-shadow: 0 0 8px #00ff88; }
+        .g-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+        .g-name { font-size: 10px; letter-spacing: 1px; color: #aaa; font-family: monospace; }
+
+        /* 加载层 */
+        #loading-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 999;
+            display: flex; justify-content: center; align-items: center;
+            color: #00ff88; font-family: monospace; letter-spacing: 2px;
+            transition: opacity 1s;
+        }
+
+        /* --- 深度美化 lil-gui 控制栏 --- */
+        .lil-gui { 
+            --background-color: rgba(6, 11, 20, 0.85);
+            --text-color: #d0d0d0;
+            --title-background-color: rgba(0, 255, 136, 0.15);
+            --widget-color: #334455;
+            --hover-color: #445566;
+            --focus-color: #556677;
+            --number-color: #00ff88;
+            --string-color: #00ff88;
+            
+            font-family: 'Segoe UI', monospace !important;
+            font-size: 13px !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px !important;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.5s;
+        }
+        .lil-gui .title { color: #00ff88; font-weight: bold; letter-spacing: 1px; border-bottom: 1px solid rgba(0,255,136,0.1); }
+        .lil-gui.root { right: 20px; top: 20px; }
+
+        /* 用于隐藏 UI 的类 */
+        .hide-ui #hud, .hide-ui .lil-gui {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <video id="input_video"></video>
+    <div id="loading-overlay">系统初始化中...</div>
+
+    <div id="hud">
+        <div class="top-bar">
+            <div>
+                <h1 id="planet-name">系统启动</h1>
+                <div class="sub-text">粒子渲染引擎 V2.0</div>
+            </div>
+            <div id="hand-status">等待信号连接...</div>
+            <div style="width: 250px;"></div> 
+        </div>
+
+        <div class="bottom-bar">
+            <div class="gesture-guide">
+                <div class="g-item" id="g-swipe">
+                    <span class="g-icon">👋</span><span class="g-name">挥手切换</span>
+                </div>
+                <div class="g-item" id="g-move">
+                    <span class="g-icon">☝️</span><span class="g-name">指尖旋转</span>
+                </div>
+                <div class="g-item" id="g-pinch">
+                    <span class="g-icon">👌</span><span class="g-name">捏合爆发</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import GUI from 'three/addons/libs/lil-gui.module.min.js'; 
+
+        // --- 全局变量 ---
+        let scene, camera, renderer, composer;
+        let clock = new THREE.Clock();
+        
+        const MODES = { EARTH: 0, SATURN: 1 };
+        let currentMode = MODES.SATURN;
+        let isTransitioning = false;
+        
+        // 交互变量
+        let handStatus = { detected: false, x: 0, y: 0, pinch: 0, lastX: 0, swipeCoolDown: 0 };
+        let camTarget = { lat: 0, lon: 0, radius: 28 };
+        let camCurrent = { lat: 0, lon: 0, radius: 45 };
+
+        // 场景对象容器
+        let earthGroup, saturnGroup;
+        let earthData = { points: null, targets: [] };
+        let saturnData = { planet: null, ring: null, pTargets: [], rTargets: [] };
+        
+        // 数据缓存（用于重绘）
+        let cachedEarthImageData = null;
+        let saturnTexture = null;
+
+        // --- 参数配置 (GUI) ---
+        const params = {
+            // 全局
+            globalBrightness: 0.8,
+            bloomStrength: 1.0,
+            
+            // 地球参数
+            earthCount: 50000,
+            earthSize: 0.09,
+            earthContrast: 2.0,
+
+            // 土星参数
+            saturnCount: 10000,
+            ringCount: 20000,
+            saturnSize: 0.15
+        };
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.02);
+
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ReinhardToneMapping;
+            document.body.appendChild(renderer.domElement);
+
+            const renderScene = new RenderPass(scene, camera);
+            const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+            bloomPass.threshold = 0.1;
+            bloomPass.strength = params.bloomStrength;
+            bloomPass.radius = 0.5;
+
+            composer = new EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            createStars();
+            initSaturn(); 
+            initEarth();  
+            initGUI(bloomPass); 
+
+            window.addEventListener('resize', onWindowResize);
+            
+            // 添加 B 键监听 (隐藏/显示 UI)
+            window.addEventListener('keydown', (e) => {
+                if(e.key === 'b' || e.key === 'B') {
+                    document.body.classList.toggle('hide-ui');
+                }
+            });
+
+            updateUIState();
+        }
+
+        // --- GUI 设置 (中文版 + 样式优化) ---
+        function initGUI(bloomPass) {
+            const gui = new GUI({ title: '控制中心' });
+            
+            // 默认展开
+            // gui.open();
+
+            const fGlobal = gui.addFolder('全局视觉 (Visuals)');
+            fGlobal.add(params, 'globalBrightness', 0.1, 2.0).name('整体亮度').onChange(updateMaterialProperties);
+            fGlobal.add(params, 'bloomStrength', 0, 3.0).name('光晕强度').onChange(v => bloomPass.strength = v);
+
+            const fEarth = gui.addFolder('地球设定 (Earth)');
+            fEarth.add(params, 'earthSize', 0.01, 0.3).name('粒子大小').onChange(updateMaterialProperties);
+            fEarth.add(params, 'earthCount', 10000, 100000, 5000).name('粒子数量').onFinishChange(rebuildEarth);
+            fEarth.add(params, 'earthContrast', 1.0, 4.0).name('海洋对比度').onFinishChange(rebuildEarth);
+
+            const fSaturn = gui.addFolder('土星设定 (Saturn)');
+            fSaturn.add(params, 'saturnSize', 0.01, 0.3).name('粒子大小').onChange(updateMaterialProperties);
+            fSaturn.add(params, 'saturnCount', 5000, 50000, 1000).name('星球密度').onFinishChange(rebuildSaturn);
+            fSaturn.add(params, 'ringCount', 5000, 50000, 1000).name('光环密度').onFinishChange(rebuildSaturn);
+        }
+
+        // --- 实时更新材质 ---
+        function updateMaterialProperties() {
+            if(earthData.points) {
+                earthData.points.material.size = params.earthSize;
+                earthData.points.material.opacity = params.globalBrightness;
+            }
+            if(saturnData.planet) {
+                saturnData.planet.material.size = params.saturnSize;
+                saturnData.planet.material.opacity = params.globalBrightness * 0.9;
+            }
+            if(saturnData.ring) {
+                saturnData.ring.material.size = params.saturnSize * 0.8; 
+                saturnData.ring.material.opacity = params.globalBrightness * 0.7;
+            }
+        }
+
+        // --- 土星逻辑 ---
+        function initSaturn() {
+            saturnGroup = new THREE.Group();
+            saturnGroup.rotation.z = 27 * (Math.PI / 180); 
+            saturnGroup.rotation.x = 10 * (Math.PI / 180);
+            scene.add(saturnGroup);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 32; canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+            grad.addColorStop(0, 'rgba(255,255,255,1)');
+            grad.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, 32, 32);
+            saturnTexture = new THREE.Texture(canvas);
+            saturnTexture.needsUpdate = true;
+
+            rebuildSaturn(); 
+        }
+
+        function rebuildSaturn() {
+            if(saturnData.planet) {
+                saturnGroup.remove(saturnData.planet);
+                saturnData.planet.geometry.dispose();
+            }
+            if(saturnData.ring) {
+                saturnGroup.remove(saturnData.ring);
+                saturnData.ring.geometry.dispose();
+            }
+            saturnData.pTargets = [];
+            saturnData.rTargets = [];
+
+            const pGeo = new THREE.BufferGeometry();
+            const pPos = [];
+            for(let i=0; i<params.saturnCount; i++) {
+                pPos.push(0,0,0);
+                const r = 8.5;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                saturnData.pTargets.push({
+                    x: r * Math.sin(phi) * Math.cos(theta),
+                    y: (r*0.9) * Math.sin(phi) * Math.sin(theta),
+                    z: r * Math.cos(phi)
+                });
+            }
+            pGeo.setAttribute('position', new THREE.Float32BufferAttribute(pPos, 3));
+            saturnData.planet = new THREE.Points(pGeo, new THREE.PointsMaterial({
+                size: params.saturnSize, color: 0xd4a017, map: saturnTexture, 
+                blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: params.globalBrightness * 0.9
+            }));
+            saturnGroup.add(saturnData.planet);
+
+            const rGeo = new THREE.BufferGeometry();
+            const rPos = [];
+            for(let i=0; i<params.ringCount; i++) {
+                rPos.push(0,0,0);
+                let r = 11 + Math.random() * 17;
+                if(r>19.5 && r<21.5 && Math.random()>0.3) r = 11 + Math.random()*8; 
+                const theta = Math.random() * Math.PI * 2;
+                saturnData.rTargets.push({
+                    x: r * Math.cos(theta),
+                    y: (Math.random()-0.5)*0.3,
+                    z: r * Math.sin(theta)
+                });
+            }
+            rGeo.setAttribute('position', new THREE.Float32BufferAttribute(rPos, 3));
+            saturnData.ring = new THREE.Points(rGeo, new THREE.PointsMaterial({
+                size: params.saturnSize * 0.8, color: 0xc0b090, map: saturnTexture, 
+                blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: params.globalBrightness * 0.7
+            }));
+            saturnGroup.add(saturnData.ring);
+        }
+
+        // --- 地球逻辑 ---
+        function initEarth() {
+            earthGroup = new THREE.Group();
+            scene.add(earthGroup);
+            earthGroup.visible = false;
+            earthGroup.scale.set(0.1, 0.1, 0.1);
+
+            const loader = new THREE.TextureLoader();
+            loader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg', function(texture) {
+                const img = texture.image;
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                cachedEarthImageData = ctx.getImageData(0, 0, canvas.width, canvas.height); 
+                
+                rebuildEarth(); 
+                
+                const overlay = document.getElementById('loading-overlay');
+                overlay.style.opacity = 0;
+                setTimeout(() => overlay.style.display = 'none', 1000);
+            });
+        }
+
+        function rebuildEarth() {
+            if(!cachedEarthImageData) return;
+            
+            if(earthData.points) {
+                earthGroup.remove(earthData.points);
+                earthData.points.geometry.dispose();
+            }
+            earthData.targets = [];
+
+            const width = cachedEarthImageData.width;
+            const height = cachedEarthImageData.height;
+            const data = cachedEarthImageData.data;
+            const count = params.earthCount;
+            const globeRadius = 10;
+
+            const positions = [];
+            const colors = [];
+            const phi = Math.PI * (3 - Math.sqrt(5)); 
+
+            for (let i = 0; i < count; i++) {
+                const y = 1 - (i / (count - 1)) * 2; 
+                const radiusAtY = Math.sqrt(1 - y * y);
+                const theta = phi * i;
+                const x = Math.cos(theta) * radiusAtY;
+                const z = Math.sin(theta) * radiusAtY;
+
+                const u = (Math.atan2(x, z) / (2 * Math.PI)) + 0.5;
+                const v = 0.5 - (Math.asin(y) / Math.PI);
+                const px = Math.floor(u * width);
+                const py = Math.floor(v * height);
+                const idx = ((Math.max(0, Math.min(height-1, py))) * width + (Math.max(0, Math.min(width-1, px)))) * 4;
+
+                const r = data[idx] / 255;
+                const g = data[idx+1] / 255;
+                const b = data[idx+2] / 255;
+                
+                let brightness = (r + g + b) / 3;
+                let displayBrightness = Math.pow(brightness, params.earthContrast); 
+                if (displayBrightness < 0.05) continue; 
+
+                const color = new THREE.Color();
+                if(brightness > 0.15) {
+                    color.setRGB(r, g + 0.15, b + 0.3);
+                } else {
+                    color.setHex(0x001133);
+                }
+
+                positions.push(0,0,0);
+                colors.push(color.r, color.g, color.b);
+
+                earthData.targets.push({
+                    x: x * globeRadius,
+                    y: y * globeRadius,
+                    z: z * globeRadius,
+                    burst: 0.5 + displayBrightness * 2.5
+                });
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: params.earthSize, vertexColors: true, transparent: true, opacity: params.globalBrightness,
+                blending: THREE.AdditiveBlending, depthWrite: false
+            });
+
+            earthData.points = new THREE.Points(geometry, material);
+            earthGroup.add(earthData.points);
+        }
+
+        // --- 星空背景 ---
+        function createStars() {
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+            for(let i=0; i<3000; i++) {
+                const r = 80 + Math.random() * 80;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions.push(
+                    r * Math.sin(phi) * Math.cos(theta),
+                    r * Math.sin(phi) * Math.sin(theta),
+                    r * Math.cos(phi)
+                );
+            }
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            const stars = new THREE.Points(geometry, new THREE.PointsMaterial({
+                color: 0x666666, size: 0.2, transparent: true, opacity: 0.5
+            }));
+            scene.add(stars);
+        }
+
+        // --- MediaPipe 手势识别 ---
+        function initMediaPipe() {
+            const videoElement = document.getElementById('input_video');
+            const handStatusEl = document.getElementById('hand-status');
+
+            const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+
+            hands.onResults((results) => {
+                if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                    if(!handStatus.detected) {
+                        handStatus.detected = true;
+                        handStatusEl.innerText = "信号已链接";
+                        handStatusEl.classList.add('active');
+                    }
+
+                    const landmarks = results.multiHandLandmarks[0];
+                    const indexTip = landmarks[8];
+                    const thumbTip = landmarks[4];
+                    const wrist = landmarks[0];
+
+                    handStatus.x = (1 - indexTip.x) - 0.5;
+                    handStatus.y = indexTip.y - 0.5;
+
+                    const d = Math.sqrt(Math.pow(thumbTip.x - indexTip.x, 2) + Math.pow(thumbTip.y - indexTip.y, 2));
+                    let pinchRaw = (0.15 - d) / 0.12; 
+                    handStatus.pinch += (Math.max(0, Math.min(1, pinchRaw)) - handStatus.pinch) * 0.2;
+
+                    // Swipe Switch
+                    const currentWristX = 1 - wrist.x;
+                    const deltaX = currentWristX - handStatus.lastX;
+                    if(Date.now() > handStatus.swipeCoolDown) {
+                        if(Math.abs(deltaX) > 0.08) { 
+                            triggerSceneSwitch();
+                            handStatus.swipeCoolDown = Date.now() + 1500;
+                            const swipeIcon = document.getElementById('g-swipe');
+                            swipeIcon.classList.add('active');
+                            setTimeout(() => swipeIcon.classList.remove('active'), 500);
+                        }
+                    }
+                    handStatus.lastX = currentWristX;
+
+                    if(handStatus.pinch > 0.5) document.getElementById('g-pinch').classList.add('active');
+                    else document.getElementById('g-pinch').classList.remove('active');
+                    document.getElementById('g-move').classList.add('active');
+
+                } else {
+                    if(handStatus.detected) {
+                        handStatus.detected = false;
+                        handStatusEl.innerText = "等待信号连接...";
+                        handStatusEl.classList.remove('active');
+                        document.querySelectorAll('.g-item').forEach(el => el.classList.remove('active'));
+                    }
+                    handStatus.pinch = 0;
+                }
+            });
+
+            const cameraUtils = new Camera(videoElement, {
+                onFrame: async () => { await hands.send({image: videoElement}); },
+                width: 640, height: 480
+            });
+            cameraUtils.start();
+        }
+
+        function triggerSceneSwitch() {
+            if(isTransitioning) return;
+            isTransitioning = true;
+            const nextMode = (currentMode === MODES.SATURN) ? MODES.EARTH : MODES.SATURN;
+            currentMode = nextMode;
+            updateUIState();
+            camCurrent.radius = 80; // Zoom out effect
+            setTimeout(() => { isTransitioning = false; }, 1000);
+        }
+
+        function updateUIState() {
+            const title = document.getElementById('planet-name');
+            const sub = document.querySelector('.sub-text');
+            if(currentMode === MODES.SATURN) {
+                title.innerText = "当前星系：土星";
+                sub.innerText = "Saturn // 气态巨行星";
+                title.style.color = "#d4af37";
+            } else {
+                title.innerText = "当前星系：地球";
+                sub.innerText = "Earth // 蓝色家园";
+                title.style.color = "#00aaff";
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            if(!isTransitioning) {
+                camTarget.lon = handStatus.x * 3.0;
+                camTarget.lat = handStatus.y * 2.0;
+                camTarget.radius = (currentMode === MODES.EARTH ? 26 : 45) - (handStatus.pinch * 10);
+            }
+
+            camCurrent.lon += (camTarget.lon - camCurrent.lon) * 0.05;
+            camCurrent.lat += (camTarget.lat - camCurrent.lat) * 0.05;
+            camCurrent.radius += (camTarget.radius - camCurrent.radius) * 0.05;
+            camCurrent.lat = Math.max(-Math.PI/2.1, Math.min(Math.PI/2.1, camCurrent.lat));
+
+            const cx = camCurrent.radius * Math.cos(camCurrent.lat) * Math.sin(camCurrent.lon);
+            const cy = camCurrent.radius * Math.sin(camCurrent.lat);
+            const cz = camCurrent.radius * Math.cos(camCurrent.lat) * Math.cos(camCurrent.lon);
+            camera.position.set(cx, cy, cz);
+            camera.lookAt(0, 0, 0);
+
+            updateSaturn(time);
+            updateEarth(time);
+            composer.render();
+        }
+
+        function updateSaturn(time) {
+            if (currentMode === MODES.SATURN) {
+                saturnGroup.visible = true;
+                saturnGroup.scale.lerp(new THREE.Vector3(1,1,1), 0.05);
+                if(saturnData.planet) saturnData.planet.rotation.y += 0.003;
+                if(saturnData.ring) saturnData.ring.rotation.y += 0.001;
+            } else {
+                saturnGroup.scale.lerp(new THREE.Vector3(0.01,0.01,0.01), 0.1);
+                if(saturnGroup.scale.x < 0.05) saturnGroup.visible = false;
+                return;
+            }
+
+            const explosion = handStatus.pinch * 20;
+            
+            if(saturnData.planet) {
+                const pos = saturnData.planet.geometry.attributes.position.array;
+                for(let i=0; i<saturnData.pTargets.length; i++) {
+                    const t = saturnData.pTargets[i];
+                    const scale = 1 + (explosion * 0.05) + Math.sin(time + i)*0.002;
+                    pos[i*3]   += (t.x * scale - pos[i*3]) * 0.1;
+                    pos[i*3+1] += (t.y * scale - pos[i*3+1]) * 0.1;
+                    pos[i*3+2] += (t.z * scale - pos[i*3+2]) * 0.1;
+                }
+                saturnData.planet.geometry.attributes.position.needsUpdate = true;
+            }
+            if(saturnData.ring) {
+                const pos = saturnData.ring.geometry.attributes.position.array;
+                for(let i=0; i<saturnData.rTargets.length; i++) {
+                    const t = saturnData.rTargets[i];
+                    const scale = 1 + (explosion * 0.1);
+                    pos[i*3]   += (t.x * scale - pos[i*3]) * 0.08;
+                    pos[i*3+1] += (t.y * scale - pos[i*3+1]) * 0.08;
+                    pos[i*3+2] += (t.z * scale - pos[i*3+2]) * 0.08;
+                }
+                saturnData.ring.geometry.attributes.position.needsUpdate = true;
+            }
+        }
+
+        function updateEarth(time) {
+            if (!earthData.points) return;
+
+            if (currentMode === MODES.EARTH) {
+                earthGroup.visible = true;
+                earthGroup.scale.lerp(new THREE.Vector3(1,1,1), 0.05);
+                earthGroup.rotation.y += 0.002; 
+            } else {
+                earthGroup.scale.lerp(new THREE.Vector3(0.01,0.01,0.01), 0.1);
+                if(earthGroup.scale.x < 0.05) earthGroup.visible = false;
+                return;
+            }
+
+            const explosion = handStatus.pinch * 15;
+            const pos = earthData.points.geometry.attributes.position.array;
+            
+            for(let i=0; i<earthData.targets.length; i++) {
+                const t = earthData.targets[i];
+                const scale = 1 + (explosion * 0.1 * t.burst);
+                pos[i*3]   += (t.x * scale - pos[i*3]) * 0.1;
+                pos[i*3+1] += (t.y * scale - pos[i*3+1]) * 0.1;
+                pos[i*3+2] += (t.z * scale - pos[i*3+2]) * 0.1;
+            }
+            earthData.points.geometry.attributes.position.needsUpdate = true;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        init();
+        initMediaPipe();
+        animate();
+
+    </script>
+</body>
+</html>

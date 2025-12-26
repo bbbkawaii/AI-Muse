@@ -1,0 +1,205 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1600"
+  height="900"
+  viewBox="0 0 1600 900"
+  role="img"
+  aria-label="Soul Nebula - Emotional Cards Galaxy preview"
+>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#02020a" />
+      <stop offset="0.5" stop-color="#0a0a1a" />
+      <stop offset="1" stop-color="#050510" />
+    </linearGradient>
+
+    <radialGradient id="nebula1" cx="30%" cy="40%" r="50%">
+      <stop offset="0" stop-color="#a18cd1" stop-opacity="0.3" />
+      <stop offset="0.5" stop-color="#302b63" stop-opacity="0.15" />
+      <stop offset="1" stop-color="#000" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="nebula2" cx="70%" cy="60%" r="45%">
+      <stop offset="0" stop-color="#00ffea" stop-opacity="0.2" />
+      <stop offset="0.5" stop-color="#004e92" stop-opacity="0.1" />
+      <stop offset="1" stop-color="#000" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="card1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#24243e" />
+      <stop offset="0.5" stop-color="#302b63" />
+      <stop offset="1" stop-color="#0f0c29" />
+    </linearGradient>
+
+    <linearGradient id="card2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#134e5e" />
+      <stop offset="1" stop-color="#71b280" />
+    </linearGradient>
+
+    <linearGradient id="card3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9966" />
+      <stop offset="1" stop-color="#ff5e62" />
+    </linearGradient>
+
+    <linearGradient id="card4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4568DC" />
+      <stop offset="1" stop-color="#B06AB3" />
+    </linearGradient>
+
+    <filter id="bloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -5"
+        result="bloom"
+      />
+      <feMerge>
+        <feMergeNode in="bloom" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="cardGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="url(#bg)" />
+
+  <!-- Nebula clouds -->
+  <ellipse cx="480" cy="360" rx="500" ry="400" fill="url(#nebula1)">
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="8s" repeatCount="indefinite" />
+  </ellipse>
+  <ellipse cx="1120" cy="540" rx="450" ry="380" fill="url(#nebula2)">
+    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="7s" begin="1s" repeatCount="indefinite" />
+  </ellipse>
+
+  <!-- Floating particles -->
+  <g filter="url(#bloom)">
+    <circle cx="200" cy="150" r="2" fill="#a18cd1">
+      <animate attributeName="cy" values="150;140;150" dur="4s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="350" cy="280" r="1.5" fill="#71b280">
+      <animate attributeName="cy" values="280;265;280" dur="3.5s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2.8s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="1400" cy="200" r="2" fill="#00ffea">
+      <animate attributeName="cy" values="200;185;200" dur="4.2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3.2s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="1250" cy="720" r="1.8" fill="#ff9966">
+      <animate attributeName="cy" values="720;705;720" dur="3.8s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="180" cy="650" r="1.5" fill="#B06AB3">
+      <animate attributeName="cy" values="650;638;650" dur="3.3s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.9s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="900" cy="120" r="2.2" fill="#fcb045">
+      <animate attributeName="cy" values="120;105;120" dur="4.5s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.3;0.85;0.3" dur="3.6s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="600" cy="780" r="1.8" fill="#4CA1AF">
+      <animate attributeName="cy" values="780;765;780" dur="3.7s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.45;0.95;0.45" dur="2.7s" repeatCount="indefinite" />
+    </circle>
+  </g>
+
+  <!-- Floating emotion cards -->
+  <g filter="url(#cardGlow)">
+    <!-- Card 1: Main center card -->
+    <g>
+      <rect x="680" y="350" width="240" height="140" rx="12" fill="url(#card1)" opacity="0.9" />
+      <circle cx="710" cy="375" r="6" fill="#24243e" />
+      <circle cx="730" cy="375" r="6" fill="#a18cd1" />
+      <circle cx="750" cy="375" r="6" fill="#0f0c29" />
+      <text x="800" y="435" fill="white" font-size="36" font-weight="bold" text-anchor="middle" font-family="sans-serif">Soul Nebula</text>
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0; 0,-12; 0,0"
+        dur="5s"
+        repeatCount="indefinite"
+      />
+    </g>
+
+    <!-- Card 2: Top left -->
+    <g>
+      <rect x="280" y="200" width="180" height="100" rx="10" fill="url(#card2)" opacity="0.75" />
+      <circle cx="305" cy="222" r="5" fill="#134e5e" />
+      <circle cx="322" cy="222" r="5" fill="#71b280" />
+      <text x="370" y="265" fill="white" font-size="24" font-weight="bold" text-anchor="middle" font-family="sans-serif">Stars</text>
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0; 8,-8; 0,0"
+        dur="6s"
+        begin="0.5s"
+        repeatCount="indefinite"
+      />
+    </g>
+
+    <!-- Card 3: Top right -->
+    <g>
+      <rect x="1100" y="240" width="180" height="100" rx="10" fill="url(#card3)" opacity="0.75" />
+      <circle cx="1125" cy="262" r="5" fill="#ff9966" />
+      <circle cx="1142" cy="262" r="5" fill="#ff5e62" />
+      <text x="1190" y="305" fill="white" font-size="24" font-weight="bold" text-anchor="middle" font-family="sans-serif">Dreams</text>
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0; -6,-10; 0,0"
+        dur="5.5s"
+        begin="1s"
+        repeatCount="indefinite"
+      />
+    </g>
+
+    <!-- Card 4: Bottom left -->
+    <g>
+      <rect x="350" y="560" width="180" height="100" rx="10" fill="url(#card4)" opacity="0.7" />
+      <circle cx="375" cy="582" r="5" fill="#4568DC" />
+      <circle cx="392" cy="582" r="5" fill="#B06AB3" />
+      <text x="440" y="625" fill="white" font-size="24" font-weight="bold" text-anchor="middle" font-family="sans-serif">Hopes</text>
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0; 10,8; 0,0"
+        dur="6.5s"
+        begin="0.8s"
+        repeatCount="indefinite"
+      />
+    </g>
+
+    <!-- Card 5: Bottom right -->
+    <g>
+      <rect x="1050" y="520" width="180" height="100" rx="10" fill="url(#card1)" opacity="0.7" />
+      <circle cx="1075" cy="542" r="5" fill="#24243e" />
+      <circle cx="1092" cy="542" r="5" fill="#a18cd1" />
+      <text x="1140" y="585" fill="white" font-size="24" font-weight="bold" text-anchor="middle" font-family="sans-serif">Light</text>
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0; -8,10; 0,0"
+        dur="5.8s"
+        begin="1.2s"
+        repeatCount="indefinite"
+      />
+    </g>
+  </g>
+
+  <!-- Central glow effect -->
+  <g filter="url(#bloom)">
+    <circle cx="800" cy="420" r="180" fill="#00ffea" opacity="0.08">
+      <animate attributeName="r" values="180;200;180" dur="4s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.05;0.12;0.05" dur="4s" repeatCount="indefinite" />
+    </circle>
+  </g>
+</svg>
