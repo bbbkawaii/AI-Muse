@@ -11,14 +11,16 @@
 ## 🚀 黑客松目标（48小时）
 
 ### 必须完成的核心功能
-1. **展示墙** - 展示 AI 创意作品（如 3D 可视化、交互动画等）
-2. **在线体验** - 点击即可体验作品，无需下载
-3. **快速上传** - 创作者能快速分享自己的作品
-4. **简单搜索** - 按标签/类别快速找到感兴趣的内容
+1. **展示墙** - 展示 AI 生成的交互页面（如 3D 可视化、交互动画等）
+2. **在线预览** - 点击即可在 iframe 中体验作品
+3. **显示 Prompt** - 展示生成这个作品的 AI prompt
+4. **作品说明** - 解释这个作品的创意点和实现方式
+5. **简单搜索** - 按标签/类别快速找到感兴趣的内容
 
 ### 评委会看到的亮点
 - ✨ 精美的作品展示界面
-- ⚡ 流畅的在线体验（代码在线运行）
+- 🤖 展示 AI 生成的创意作品（突出 AI 应用）
+- 📝 每个作品都有 Prompt，体现 AI 提示词工程
 - 🎨 至少 5-10 个优质 Demo 作品
 - 🔍 良好的分类和发现机制
 
@@ -53,19 +55,25 @@ Next.js 14 + TypeScript + Tailwind CSS
 - 演示够用
 - 后期可迁移
 
-### 代码在线运行
+### 页面展示方式
 ```
-Sandpack (CodeSandbox 开源组件)
-- npm install @codesandbox/sandpack-react
-- 支持 React/Vue/Vanilla JS
-- 5分钟集成完成
+方案 1: iframe 嵌入（推荐）
+- 将 AI 生成的 HTML 文件上传到 Supabase Storage
+- 在详情页用 iframe 嵌入显示
+- 简单安全，完全隔离
+
+方案 2: 直接渲染（快速原型）
+- 将 HTML 存在数据库
+- 使用 dangerouslySetInnerHTML（需注意安全）
+- 适合受控环境
 ```
 
-### 认证（如果需要）
+### AI 页面生成（准备 Demo）
 ```
-NextAuth.js
-- GitHub 登录（最简单）
-- 一个配置文件搞定
+使用 Claude / ChatGPT / v0.dev
+- Prompt: "创建一个粒子星云动画的完整 HTML 页面"
+- 复制生成的完整 HTML 代码
+- 保存为 .html 文件，上传到项目
 ```
 
 ---
@@ -81,12 +89,12 @@ npx create-next-app@latest ai-muse --typescript --tailwind --app
 
 # 安装核心依赖
 npm install @supabase/supabase-js
-npm install @codesandbox/sandpack-react
 npm install lucide-react
+npm install react-markdown  # 用于渲染说明文档
 
 # 安装 UI 组件（shadcn/ui）
 npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card input
+npx shadcn-ui@latest add button card input badge dialog
 ```
 
 **小时 3-4: 数据库和基础页面**
@@ -101,38 +109,56 @@ npx shadcn-ui@latest add button card input
 - 瀑布流/卡片展示组件
 - 假数据填充（先用 mock data）
 - 分类标签系统
+- 卡片显示缩略图、标题、标签
 
-**小时 7-8: 代码编辑器**
-- 集成 Sandpack
-- 实现代码预览功能
-- 测试基础运行
+**小时 7-8: 页面预览功能**
+- iframe 嵌入组件
+- 准备第一个 AI 生成的 Demo（用 Claude 生成一个炫酷的 HTML）
+- 测试 iframe 显示效果
+- 调整 iframe 样式和响应式
 
 ### Day 1 晚上（4小时）- 完善体验
 
 **小时 9-10: 作品详情页**
 - 点击查看作品详情
-- 显示代码和运行效果
-- 添加作者信息
+- iframe 全屏预览
+- 显示作品说明
+- 显示生成该作品的 Prompt
+- 复制 Prompt 按钮
 
-**小时 11-12: 上传功能**
-- 简单表单（标题、描述、代码、标签）
-- 保存到数据库
-- 可以不做认证，后台手动审核
+**小时 11-12: 上传功能（可选）**
+- 简单表单（标题、描述、HTML 文件、Prompt、标签）
+- 文件上传到 Supabase Storage
+- 保存元数据到数据库
+- 或者：直接用静态数据，手动准备 5-10 个作品
 
 ### Day 2 上午（4小时）- 内容填充
 
 **小时 13-16: 准备 Demo 作品**
-这是最重要的环节！准备 5-10 个精彩的 AI 创意作品：
-- 3D 可视化（Three.js + AI 生成）
-- 粒子动画
-- AI 绘画展示
-- 数据可视化
-- 交互式游戏
+这是最重要的环节！用 AI 生成 5-10 个精彩的交互页面：
 
-**作品来源**：
-- CodePen 上的优秀作品
-- 自己写几个简单 Demo
-- GitHub 开源项目改编
+**生成方式**：
+1. 使用 Claude / ChatGPT / v0.dev
+2. 给出详细 Prompt（保存这些 Prompt！）
+3. 获取完整的 HTML 文件（包含 CSS 和 JS）
+4. 保存为独立的 .html 文件
+
+**推荐的作品类型**：
+- 🌌 粒子星云动画（Three.js/Canvas）
+- 🎨 SVG 艺术生成器
+- 📊 数据可视化（D3.js/Chart.js）
+- 🎮 简单交互游戏
+- 🌊 CSS 动画效果
+- 🎭 AI 图片展示画廊
+- 🔮 3D 几何体动画
+
+**Prompt 示例**：
+```
+"创建一个完整的 HTML 页面，包含粒子星云效果。
+要求：使用 Canvas API，包含鼠标交互，
+渐变色背景，星星会跟随鼠标移动。
+所有代码在一个文件中。"
+```
 
 ### Day 2 下午（4小时）- 打磨和准备
 
@@ -180,10 +206,11 @@ ai-muse/
 CREATE TABLE projects (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
-  description TEXT,
-  code TEXT NOT NULL,           -- 直接存代码
+  description TEXT,              -- 作品说明
+  html_url TEXT NOT NULL,        -- HTML 文件 URL（存在 Supabase Storage）
+  prompt TEXT NOT NULL,          -- 生成该作品的 AI Prompt
   thumbnail_url TEXT,            -- 缩略图
-  category TEXT,                 -- 分类: 3d, animation, game, ai
+  category TEXT,                 -- 分类: 3d, animation, visualization, game, art
   tags TEXT[],                   -- 标签数组
   author_name TEXT,              -- 简单存个名字就行
   view_count INT DEFAULT 0,
@@ -193,17 +220,24 @@ CREATE TABLE projects (
 
 **就这一张表！** 黑客松不需要复杂的关系。
 
+### 字段说明
+- `html_url`: 指向 Supabase Storage 中的 .html 文件
+- `prompt`: 展示给用户的 AI 提示词，这是亮点！
+- `description`: 解释这个作品的创意和技术实现
+
 ---
 
 ## 🎨 功能模块简化版
 
 ### 1. Interactive Lab（重点！）
 **MVP 范围**：
-- ✅ 展示作品列表
-- ✅ 点击查看详情
-- ✅ 在线运行代码（Sandpack）
-- ✅ 分类筛选
-- ❌ 不做：用户系统、评论、点赞（时间不够）
+- ✅ 展示 AI 生成的作品列表
+- ✅ 点击查看详情（iframe 预览）
+- ✅ 显示生成该作品的 Prompt
+- ✅ 显示作品说明和技术解释
+- ✅ 分类筛选和标签
+- ✅ 复制 Prompt 功能
+- ❌ 不做：代码编辑、实时调参、用户系统、评论（时间不够）
 
 ### 2. Efficiency Matrix（简化）
 **MVP 范围**：
@@ -240,19 +274,50 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 ```
 
-### 快速集成代码运行
+### 快速集成页面预览
 ```tsx
-import { Sandpack } from "@codesandbox/sandpack-react";
-
-export function CodePreview({ code }: { code: string }) {
+// components/ProjectPreview.tsx
+export function ProjectPreview({ htmlUrl }: { htmlUrl: string }) {
   return (
-    <Sandpack
-      template="react"
-      files={{
-        "/App.js": code,
-      }}
-      theme="dark"
+    <iframe
+      src={htmlUrl}
+      className="w-full h-[600px] border-0 rounded-lg"
+      sandbox="allow-scripts allow-same-origin"
+      title="Project Preview"
     />
+  );
+}
+
+// 使用
+<ProjectPreview htmlUrl={project.html_url} />
+```
+
+### 显示 Prompt（核心功能）
+```tsx
+// components/PromptDisplay.tsx
+import { Copy, Check } from "lucide-react";
+import { useState } from "react";
+
+export function PromptDisplay({ prompt }: { prompt: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copyPrompt = () => {
+    navigator.clipboard.writeText(prompt);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="bg-slate-900 p-6 rounded-lg">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">生成 Prompt</h3>
+        <button onClick={copyPrompt} className="flex items-center gap-2">
+          {copied ? <Check size={16} /> : <Copy size={16} />}
+          {copied ? '已复制' : '复制'}
+        </button>
+      </div>
+      <p className="text-gray-300 whitespace-pre-wrap">{prompt}</p>
+    </div>
   );
 }
 ```
@@ -281,9 +346,28 @@ export const mockProjects = [
   {
     id: "1",
     title: "AI 粒子星云",
-    code: `/* React 代码 */`,
+    description: "使用 Canvas API 创建的交互式粒子星云效果，鼠标移动会影响粒子轨迹。",
+    html_url: "/demos/particle-nebula.html",
+    prompt: "创建一个完整的 HTML 页面，包含粒子星云效果。要求：使用 Canvas API，包含鼠标交互，渐变色背景，星星会跟随鼠标移动。所有代码在一个文件中。",
+    thumbnail_url: "/thumbnails/particle.jpg",
     category: "3d",
-    tags: ["three.js", "particles", "ai"],
+    tags: ["canvas", "particles", "interactive"],
+    author_name: "AI Creator",
+    view_count: 0,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    title: "SVG 动态艺术",
+    description: "基于 SVG 的生成艺术，每次刷新都会产生不同的图案。",
+    html_url: "/demos/svg-art.html",
+    prompt: "创建一个 SVG 生成艺术页面，使用随机算法生成抽象图案，包含渐变色和动画效果。",
+    thumbnail_url: "/thumbnails/svg-art.jpg",
+    category: "art",
+    tags: ["svg", "generative", "animation"],
+    author_name: "AI Creator",
+    view_count: 0,
+    created_at: new Date().toISOString(),
   },
   // ... 更多
 ];
@@ -296,14 +380,17 @@ export const mockProjects = [
 ### 创新性（30分）
 **怎么拿分**：
 - 强调"打破创意获取壁垒"的痛点
-- 展示独特的在线代码运行功能
-- 强调社区共享的理念
+- 突出 **展示 AI Prompt** 的独特性（帮助学习提示词工程）
+- 展示 AI 生成的创意作品质量
+- 强调降低创意门槛的社会价值
 
 ### 技术实现（25分）
 **怎么拿分**：
-- 代码整洁，使用现代技术栈
-- 展示 Sandpack 集成的技术亮点
+- 代码整洁，使用现代技术栈（Next.js + TypeScript）
+- 展示 **AI 生成内容** 的技术亮点
+- iframe 安全隔离的技术考量
 - 性能流畅（提前测试）
+- 响应式设计良好
 
 ### 商业价值（25分）
 **怎么拿分**：
@@ -390,13 +477,20 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx
 
 ### Demo 脚本
 ```
-1. 打开首页 - "这是我们的作品展示墙"
+1. 打开首页 - "这是我们的 AI 创意作品展示墙"
 2. 筛选标签 - "可以快速找到感兴趣的类别"
 3. 点击作品 - "点击即可在线体验，无需下载"
-4. 运行代码 - "所有代码都能直接运行"
-5. 修改参数 - "改个颜色试试，实时看到效果"
-6. （彩蛋）- 准备一个特别炫酷的作品作为高潮
+4. 展示预览 - "这个粒子星云动画完全由 AI 生成"
+5. 显示 Prompt - "看，这就是我用来生成它的 Prompt"
+6. 复制功能 - "你可以复制这个 Prompt，用 AI 生成自己的作品"
+7. 作品说明 - "我们还提供了技术解释，帮助理解实现原理"
+8. （彩蛋）- 准备一个特别炫酷的作品作为高潮
 ```
+
+**演示要点**：
+- 强调 **AI 生成** 的特性
+- 突出 **Prompt 展示** 的价值（学习提示词工程）
+- 展示作品的交互性和视觉效果
 
 ---
 
@@ -547,14 +641,41 @@ const filtered = projects.filter(p =>
 const { data } = await supabase.from('projects').select('*')
 
 // 3. 插入数据
-const { data } = await supabase.from('projects').insert({ title: 'xxx' })
+const { data } = await supabase.from('projects').insert({
+  title: 'AI 粒子星云',
+  description: '...',
+  html_url: 'https://xxx.supabase.co/storage/v1/object/public/demos/particle.html',
+  prompt: '创建一个...',
+  category: '3d',
+  tags: ['canvas', 'particles']
+})
+
+// 4. 上传文件到 Storage
+const { data, error } = await supabase.storage
+  .from('demos')
+  .upload('particle.html', file)
 ```
 
-### Sandpack 快速集成
+### iframe 嵌入预览
 ```tsx
-import { Sandpack } from "@codesandbox/sandpack-react";
+<iframe
+  src={htmlUrl}
+  sandbox="allow-scripts allow-same-origin"
+  className="w-full h-[600px]"
+/>
+```
 
-<Sandpack template="react" files={{ "/App.js": code }} />
+### 文件上传组件
+```tsx
+// 简单的文件上传
+<input
+  type="file"
+  accept=".html"
+  onChange={(e) => {
+    const file = e.target.files?.[0];
+    if (file) handleUpload(file);
+  }}
+/>
 ```
 
 ### Vercel 快速部署
