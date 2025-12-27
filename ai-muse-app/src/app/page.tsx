@@ -1,4 +1,5 @@
 import AppShell from "@/components/AppShell";
+import OmniModalCreativeLab from "@/components/OmniModalCreativeLab";
 import ShowcaseGallery from "@/components/ShowcaseGallery";
 import AIVideoGallery from "@/components/AIVideoGallery";
 import AIImageGallery from "@/components/AIImageGallery";
@@ -11,6 +12,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <AppShell>
+      <OmniModalCreativeLab />
       <ShowcaseGallery />
       <AIVideoGallery />
       <AIImageGallery />
