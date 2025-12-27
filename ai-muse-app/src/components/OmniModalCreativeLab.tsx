@@ -291,7 +291,7 @@ function FeaturedMainCard({
   );
 }
 
-// 侧边卡片（小尺寸）
+// 卡片组件
 function FeaturedSideCard({
   item,
   index,
@@ -300,7 +300,7 @@ function FeaturedSideCard({
   onLike,
   onStar,
 }: {
-  item: typeof featuredItems[1] | typeof featuredItems[2];
+  item: typeof featuredItems[number];
   index: number;
   isLiked: boolean;
   isStarred: boolean;
@@ -579,38 +579,19 @@ export default function OmniModalCreativeLab() {
             </p>
           </motion.div>
 
-          {/* Bento Grid 布局 */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
-            {/* 主卡片 - 占 3 列 */}
-            <div className="lg:col-span-3">
-              <FeaturedMainCard
-                item={featuredItems[0]}
-                isLiked={likedItems.has(featuredItems[0].id)}
-                isStarred={starredItems.has(featuredItems[0].id)}
-                onLike={(e) => handleLike(e, featuredItems[0].id)}
-                onStar={(e) => handleStar(e, featuredItems[0].id)}
-              />
-            </div>
-
-            {/* 侧边卡片 - 占 2 列 */}
-            <div className="lg:col-span-2 flex flex-col gap-4 md:gap-6">
+          {/* 三列等宽布局 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {featuredItems.map((item, index) => (
               <FeaturedSideCard
-                item={featuredItems[1]}
-                index={1}
-                isLiked={likedItems.has(featuredItems[1].id)}
-                isStarred={starredItems.has(featuredItems[1].id)}
-                onLike={(e) => handleLike(e, featuredItems[1].id)}
-                onStar={(e) => handleStar(e, featuredItems[1].id)}
+                key={item.id}
+                item={item}
+                index={index}
+                isLiked={likedItems.has(item.id)}
+                isStarred={starredItems.has(item.id)}
+                onLike={(e) => handleLike(e, item.id)}
+                onStar={(e) => handleStar(e, item.id)}
               />
-              <FeaturedSideCard
-                item={featuredItems[2]}
-                index={2}
-                isLiked={likedItems.has(featuredItems[2].id)}
-                isStarred={starredItems.has(featuredItems[2].id)}
-                onLike={(e) => handleLike(e, featuredItems[2].id)}
-                onStar={(e) => handleStar(e, featuredItems[2].id)}
-              />
-            </div>
+            ))}
           </div>
         </div>
       </div>
