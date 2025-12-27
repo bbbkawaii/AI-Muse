@@ -142,7 +142,7 @@ export default function ShowcaseGallery() {
                 className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl glass border border-glass-border hover:border-accent/50 transition-colors"
               >
                 <span className="text-text-secondary group-hover:text-white transition-colors">
-                  {expanded ? "收起" : `展开更多 (${showcaseCases.length - 6})`}
+                  {expanded ? "收起" : "展开更多"}
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-accent transition-transform duration-300 ${
