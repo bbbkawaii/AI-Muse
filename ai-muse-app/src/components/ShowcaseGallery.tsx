@@ -3,13 +3,78 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sparkles, ChevronDown } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronDown, Heart, Star } from "lucide-react";
 import { showcaseCases } from "@/lib/cases";
+
+// 使用 slug 生成固定的随机数
+function seededRandom(seed: string) {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
+function generateStats(slug: string) {
+  const seed = seededRandom(slug);
+  // 爱心数：50 到 2000
+  const likes = 50 + (seed % 1950);
+  // 星星数：比爱心少，10 到 500
+  const stars = 10 + ((seed >> 8) % 490);
+  return { likes, stars };
+}
+
+function formatNumber(num: number) {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "k";
+  }
+  return num.toString();
+}
+
+// 初始化所有 case 的基础统计数据
+const initialStats = showcaseCases.reduce((acc, c) => {
+  acc[c.slug] = generateStats(c.slug);
+  return acc;
+}, {} as Record<string, { likes: number; stars: number }>);
 
 export default function ShowcaseGallery() {
   const [expanded, setExpanded] = useState(false);
   const visibleCases = expanded ? showcaseCases : showcaseCases.slice(0, 6);
   const hasMore = showcaseCases.length > 6;
+
+  // 跟踪用户的点赞和收藏状态
+  const [likedCases, setLikedCases] = useState<Set<string>>(new Set());
+  const [starredCases, setStarredCases] = useState<Set<string>>(new Set());
+
+  const handleLike = (e: React.MouseEvent, slug: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikedCases((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(slug)) {
+        newSet.delete(slug);
+      } else {
+        newSet.add(slug);
+      }
+      return newSet;
+    });
+  };
+
+  const handleStar = (e: React.MouseEvent, slug: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setStarredCases((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(slug)) {
+        newSet.delete(slug);
+      } else {
+        newSet.add(slug);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <section id="gallery" className="relative py-24">
@@ -43,8 +108,14 @@ export default function ShowcaseGallery() {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="group glass-holographic rounded-2xl border border-glass-border overflow-hidden"
               >
-                {c.externalUrl ? (
-                  <a href={c.externalUrl} target="_blank" rel="noopener noreferrer" className="block">
+                {(() => {
+                  const baseStats = initialStats[c.slug];
+                  const isLiked = likedCases.has(c.slug);
+                  const isStarred = starredCases.has(c.slug);
+                  const displayLikes = baseStats.likes + (isLiked ? 1 : 0);
+                  const displayStars = baseStats.stars + (isStarred ? 1 : 0);
+
+                  const imageContent = (
                     <div className="relative aspect-[16/9] bg-void/60 overflow-hidden">
                       {c.thumbnailUrl ? (
                         <img
@@ -60,28 +131,54 @@ export default function ShowcaseGallery() {
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
-                    </div>
-                  </a>
-                ) : (
-                  <Link href={`/cases/${c.slug}`} className="block">
-                    <div className="relative aspect-[16/9] bg-void/60 overflow-hidden">
-                      {c.thumbnailUrl ? (
-                        <img
-                          src={c.thumbnailUrl}
-                          alt={`${c.title} preview`}
-                          loading="lazy"
-                          decoding="async"
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                        />
-                      ) : (
-                        <div className="h-full w-full flex items-center justify-center font-mono text-sm text-text-muted">
-                          No preview
+                      {/* 底部显示爱心和星星，悬停时显示 */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="flex items-center gap-4">
+                          <button
+                            onClick={(e) => handleLike(e, c.slug)}
+                            className="flex items-center gap-1.5 transition-transform hover:scale-110 active:scale-95"
+                          >
+                            <Heart
+                              className={`w-5 h-5 transition-colors duration-200 ${
+                                isLiked
+                                  ? "text-pink-500 fill-pink-500"
+                                  : "text-white/80 hover:text-pink-400"
+                              }`}
+                            />
+                            <span className={`font-mono text-sm font-medium ${isLiked ? "text-pink-400" : "text-white/80"}`}>
+                              {formatNumber(displayLikes)}
+                            </span>
+                          </button>
+                          <button
+                            onClick={(e) => handleStar(e, c.slug)}
+                            className="flex items-center gap-1.5 transition-transform hover:scale-110 active:scale-95"
+                          >
+                            <Star
+                              className={`w-5 h-5 transition-colors duration-200 ${
+                                isStarred
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-white/80 hover:text-yellow-300"
+                              }`}
+                            />
+                            <span className={`font-mono text-sm font-medium ${isStarred ? "text-yellow-400" : "text-white/80"}`}>
+                              {formatNumber(displayStars)}
+                            </span>
+                          </button>
                         </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
+                      </div>
                     </div>
-                  </Link>
-                )}
+                  );
+
+                  return c.externalUrl ? (
+                    <a href={c.externalUrl} target="_blank" rel="noopener noreferrer" className="block">
+                      {imageContent}
+                    </a>
+                  ) : (
+                    <Link href={`/cases/${c.slug}`} className="block">
+                      {imageContent}
+                    </Link>
+                  );
+                })()}
 
                 <div className="p-6">
                   <div className="flex items-center justify-between gap-4">

@@ -10,6 +10,8 @@ import SourceFilesDisplay, {
 } from "@/components/SourceFilesDisplay";
 import { getShowcaseCase, type CaseSourceFile } from "@/lib/cases";
 import CaseDetailsCollapsible from "@/components/CaseDetailsCollapsible";
+import CaseLikeStats from "@/components/CaseLikeStats";
+import CaseComments from "@/components/CaseComments";
 
 // 前三个 case 默认折叠详情
 const collapsedByDefaultSlugs = ["christmas-tree", "soul-nebula", "earth-saturn"];
@@ -79,21 +81,29 @@ export default async function CasePage({
               />
             </div>
 
-            <section className="mt-6 glass rounded-2xl border border-glass-border p-6">
-              <h2 className="font-heading font-semibold text-white">
-                Notes
-              </h2>
-              <ul className="mt-4 space-y-2 text-sm text-text-secondary leading-relaxed">
-                <li>
-                  Camera gesture control requires allowing camera permission in
-                  the browser.
-                </li>
-                <li>
-                  If camera permission is blocked, the demo still supports
-                  mouse interaction.
-                </li>
-              </ul>
-            </section>
+            {collapsedByDefaultSlugs.includes(slug) && (
+              <div className="mt-4">
+                <CaseLikeStats slug={slug} />
+              </div>
+            )}
+
+            {!collapsedByDefaultSlugs.includes(slug) && (
+              <section className="mt-6 glass rounded-2xl border border-glass-border p-6">
+                <h2 className="font-heading font-semibold text-white">
+                  Notes
+                </h2>
+                <ul className="mt-4 space-y-2 text-sm text-text-secondary leading-relaxed">
+                  <li>
+                    Camera gesture control requires allowing camera permission in
+                    the browser.
+                  </li>
+                  <li>
+                    If camera permission is blocked, the demo still supports
+                    mouse interaction.
+                  </li>
+                </ul>
+              </section>
+            )}
 
             <CaseDetailsCollapsible
               title="Prompt"
@@ -108,6 +118,10 @@ export default async function CasePage({
             >
               <SourceFilesDisplay files={sourceFiles} />
             </CaseDetailsCollapsible>
+
+            {collapsedByDefaultSlugs.includes(slug) && (
+              <CaseComments slug={slug} />
+            )}
           </div>
         </div>
       </section>
