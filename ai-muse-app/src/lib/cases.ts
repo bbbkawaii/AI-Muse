@@ -26,7 +26,7 @@ export const showcaseCases: ShowcaseCase[] = [
     title: "Grand Luxury Interactive Christmas Tree",
     description:
       "A high-fidelity, interactive 3D Christmas tree experience featuring a dynamic chaos-to-order assembly system, cinema-quality bloom, and a luxurious emerald and gold aesthetic.",
-    thumbnailUrl: "/demos/christmas-tree/thumbnail.svg",
+    thumbnailUrl: "/demos/christmas-tree/thumbnail.png",
     htmlUrl: "/demos/christmas-tree/index.html",
     sourceFiles: [
       {
@@ -69,7 +69,7 @@ export const showcaseCases: ShowcaseCase[] = [
     title: "Soul Nebula: 情绪卡片星云",
     description:
       "一个沉浸式的3D情绪卡片星云体验。数百张漂浮的情绪卡片在星云中旋转，通过手势交互可以拉近阅读、触发粒子爆炸效果，支持自定义文案和背景音乐。",
-    thumbnailUrl: "/demos/soul-nebula/thumbnail.svg",
+    thumbnailUrl: "/demos/soul-nebula/thumbnail.png",
     htmlUrl: "/demos/soul-nebula/index.html",
     sourceFiles: [
       {
@@ -111,7 +111,7 @@ export const showcaseCases: ShowcaseCase[] = [
     title: "星际穿越：地球与土星",
     description:
       "一个粒子渲染的星际控制台，展示地球和土星两颗星球。通过手势挥动切换星球，捏合触发粒子爆发效果。土星带有完整的光环系统，地球使用真实纹理映射。",
-    thumbnailUrl: "/demos/earth-saturn/thumbnail.svg",
+    thumbnailUrl: "/demos/earth-saturn/thumbnail.png",
     htmlUrl: "/demos/earth-saturn/index.html",
     sourceFiles: [
       {
