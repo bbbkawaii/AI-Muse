@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import AppShell from "@/components/AppShell";
 import ShowcaseGallery from "@/components/ShowcaseGallery";
+import AIMusicGallery from "@/components/AIMusicGallery";
 import EfficiencyMatrix from "@/components/EfficiencyMatrix";
 import AgentForge from "@/components/AgentForge";
 import HowToAcademy from "@/components/HowToAcademy";
@@ -11,6 +12,7 @@ export default function Home() {
     <AppShell>
       <Hero />
       <ShowcaseGallery />
+      <AIMusicGallery />
       <EfficiencyMatrix />
       <AgentForge />
       <HowToAcademy />
