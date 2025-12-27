@@ -15,11 +15,11 @@ interface MusicTrack {
 
 const musicTracks: MusicTrack[] = [
   {
-    id: "zhuyu",
-    title: "珠玉",
-    artist: "AI 方大同 (15live)",
-    coverUrl: "/ai-music/zhuyu-fangdatong.avif",
-    audioUrl: "/ai-music/zhuyu-fangdatong.flac",
+    id: "kill-american",
+    title: "斩杀那个美利坚人",
+    artist: "AI cover 杀死那个石家庄人",
+    coverUrl: "/ai-music/kill-american.jpg",
+    audioUrl: "/ai-music/kill-american.mp3",
     type: "audio",
   },
   {
@@ -132,16 +132,15 @@ function MusicCard({ track, index }: { track: MusicTrack; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group glass-holographic rounded-2xl border border-glass-border overflow-hidden"
     >
-      <div className="relative aspect-square bg-void/60 overflow-hidden">
+      <div className="relative bg-void/60 overflow-hidden">
         <img
           src={track.coverUrl}
           alt={`${track.title} cover`}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+          className="w-full h-auto transition-transform duration-500 group-hover:scale-[1.05]"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent pointer-events-none" />
 
         {/* Play/Pause Button */}
         <button
