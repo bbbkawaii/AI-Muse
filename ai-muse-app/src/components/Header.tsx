@@ -40,8 +40,18 @@ export default function Header() {
           <nav
             className={cn(
               "relative flex items-center justify-between rounded-2xl px-6 py-4 transition-all duration-500",
-              isScrolled ? "glass-holographic" : "bg-transparent"
+              isScrolled
+                ? "bg-[rgba(0,212,255,0.03)] backdrop-blur-[30px] border border-white/10 shadow-[0_0_40px_rgba(0,212,255,0.06),inset_0_0_60px_rgba(255,255,255,0.02)]"
+                : "bg-transparent"
             )}
+            style={
+              isScrolled
+                ? {
+                    backdropFilter: "blur(30px)",
+                    WebkitBackdropFilter: "blur(30px)",
+                  }
+                : undefined
+            }
           >
             {/* Logo */}
             <motion.a
@@ -111,7 +121,11 @@ export default function Header() {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden relative z-50 p-2 rounded-xl glass"
+              className="md:hidden relative z-50 p-2 rounded-xl bg-white/[0.03] backdrop-blur-[20px] border border-white/[0.08]"
+              style={{
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+              }}
             >
               <AnimatePresence mode="wait">
                 {isMobileMenuOpen ? (
@@ -156,6 +170,10 @@ export default function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-void/90 backdrop-blur-xl"
+              style={{
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+              }}
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
@@ -165,7 +183,11 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-[80%] max-w-sm glass-holographic border-l border-glass-border p-8 pt-24"
+              className="absolute right-0 top-0 bottom-0 w-[80%] max-w-sm bg-[rgba(0,212,255,0.03)] backdrop-blur-[30px] border-l border-white/10 shadow-[0_0_40px_rgba(0,212,255,0.06),inset_0_0_60px_rgba(255,255,255,0.02)] p-8 pt-24"
+              style={{
+                backdropFilter: "blur(30px)",
+                WebkitBackdropFilter: "blur(30px)",
+              }}
             >
               <div className="flex flex-col gap-2">
                 {navLinks.map((link, index) => (
