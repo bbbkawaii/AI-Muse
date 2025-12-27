@@ -19,7 +19,7 @@ export default function ShowcaseGallery() {
                 </span>
               </div>
               <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight">
-                First interactive case
+                AI Game Lab
               </h2>
               <p className="mt-3 text-text-secondary max-w-2xl">
                 Click a case to preview it in an isolated iframe, and inspect the
