@@ -1,0 +1,36 @@
+# 依赖
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 构建输出
+.next
+out
+dist
+build
+
+# 环境变量
+.env*.local
+.env
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# 编辑器
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# 测试
+coverage
+.nyc_output
+
+# 其他
+README.md
+.DS_Store
+*.pem

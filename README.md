@@ -171,36 +171,66 @@ npm run dev
 
 ## 📦 部署指南
 
-### 部署到 Vercel（推荐）
+> 📖 **查看完整部署指南**: [DEPLOYMENT.md](./DEPLOYMENT.md)
+>
+> 包含 Vercel、Netlify、Docker 等多种部署方案的详细说明
 
-1. **安装 Vercel CLI**
-   ```bash
-   npm i -g vercel
-   ```
+### 🚀 快速部署
 
-2. **登录 Vercel**
-   ```bash
-   vercel login
-   ```
+#### 方式 1: Vercel 一键部署（推荐）
 
-3. **部署项目**
-   ```bash
-   cd ai-muse-app
-   vercel
-   ```
+```bash
+cd ai-muse-app
+npm install -g vercel
+vercel login
+vercel --prod
+```
 
-4. **配置环境变量**
-   在 Vercel Dashboard 中设置：
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+或使用脚本：
+```bash
+cd ai-muse-app
+./scripts/deploy-vercel.sh
+```
 
-### 部署到其他平台
+#### 方式 2: Vercel 网站部署（零配置）
 
-项目支持部署到任何支持 Next.js 的平台：
-- Netlify
-- Railway
-- Render
-- AWS Amplify
+1. 访问 [vercel.com](https://vercel.com)
+2. 导入 GitHub 仓库
+3. Root Directory 选择 `ai-muse-app`
+4. 点击 Deploy
+
+#### 方式 3: Docker 部署
+
+```bash
+cd ai-muse-app
+docker-compose up -d
+```
+
+或使用脚本：
+```bash
+cd ai-muse-app
+./scripts/deploy-docker.sh
+```
+
+### 环境变量配置
+
+部署前需要配置以下环境变量：
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+参考 `ai-muse-app/.env.example` 文件
+
+### 支持的部署平台
+
+- ✅ **Vercel** - Next.js 官方推荐，零配置
+- ✅ **Netlify** - 简单易用的静态托管
+- ✅ **Docker** - 自托管，完全控制
+- ✅ **Railway** - 容器化部署
+- ✅ **Render** - 全栈应用托管
+- ✅ **AWS Amplify** - AWS 生态集成
 
 ## 📚 开发指南
 
