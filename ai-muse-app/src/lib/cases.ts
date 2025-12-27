@@ -11,6 +11,7 @@ export type ShowcaseCase = {
   description: string;
   thumbnailUrl?: string;
   htmlUrl: string;
+  externalUrl?: string;
   sourceFiles?: CaseSourceFile[];
   prompt: string;
   category: string;
@@ -150,6 +151,78 @@ export const showcaseCases: ShowcaseCase[] = [
     tags: ["three.js", "mediapipe", "particles", "planets", "gesture"],
     authorName: "AI Creative",
     permissions: ["camera"],
+  },
+  {
+    slug: "star-wars-universe",
+    title: "Star Wars Universe",
+    description:
+      "沉浸式星球大战文字冒险游戏，在AI Dungeon平台上体验星战宇宙的无限可能。",
+    thumbnailUrl: "/demos/games/图1.png",
+    htmlUrl: "",
+    externalUrl: "https://play.aidungeon.com/adventure/99TpYAPwe9a1/star-wars-universe/play",
+    prompt: "AI Dungeon Star Wars 场景",
+    category: "text-adventure",
+    tags: ["ai-dungeon", "star-wars", "text-adventure", "rpg"],
+  },
+  {
+    slug: "satoru-gojo-episode-1",
+    title: "Satoru Gojo Episode 1",
+    description:
+      "基于《咒术回战》五条悟角色的互动游戏体验，在Rosebud平台上与最强咒术师展开对决。",
+    thumbnailUrl: "/demos/games/图2.png",
+    htmlUrl: "",
+    externalUrl: "https://rosebud.ai/p/8ed68386-cbf3-4ebc-a6b3-b8c98b5c6b06",
+    prompt: "Rosebud AI 五条悟角色游戏",
+    category: "action",
+    tags: ["rosebud", "jujutsu-kaisen", "gojo", "anime"],
+  },
+  {
+    slug: "tinder-chat",
+    title: "Tinder Chat",
+    description:
+      "AI驱动的社交模拟游戏，体验虚拟约会聊天的乐趣与挑战。",
+    thumbnailUrl: "/demos/games/图3.png",
+    htmlUrl: "",
+    externalUrl: "https://rosebud.ai/p/d0333381-1c3d-4a25-8f33-d5ec84e8f230",
+    prompt: "Rosebud AI 社交模拟游戏",
+    category: "simulation",
+    tags: ["rosebud", "social", "chat", "simulation"],
+  },
+  {
+    slug: "gojo-boss-fight",
+    title: "Gojo Boss Fight",
+    description:
+      "与五条悟展开史诗级Boss战，挑战最强咒术师的无限虚空。",
+    thumbnailUrl: "/demos/games/图4.png",
+    htmlUrl: "",
+    externalUrl: "https://rosebud.ai/p/16fef9ce-3112-4dcf-8ba8-70d53c11ee6a",
+    prompt: "Rosebud AI Boss战斗游戏",
+    category: "action",
+    tags: ["rosebud", "jujutsu-kaisen", "gojo", "boss-fight"],
+  },
+  {
+    slug: "marker-match",
+    title: "Marker Match",
+    description:
+      "有趣的标记匹配益智游戏，考验你的观察力和反应速度。",
+    thumbnailUrl: "/demos/games/图5.gif",
+    htmlUrl: "",
+    externalUrl: "https://preview--5150-230490ec057fc8468bedb59ad06ee5acb9a303f8.gambo.games/",
+    prompt: "Gambo AI 益智匹配游戏",
+    category: "puzzle",
+    tags: ["gambo", "puzzle", "matching", "casual"],
+  },
+  {
+    slug: "tennis-match",
+    title: "Tennis Match",
+    description:
+      "快节奏的网球对战游戏，体验AI生成的体育竞技乐趣。",
+    thumbnailUrl: "/demos/games/图6.gif",
+    htmlUrl: "",
+    externalUrl: "https://preview--5143-db59364bbf492a89c8f31d4925f4d5c28873a970.gambo.games/",
+    prompt: "Gambo AI 网球游戏",
+    category: "sports",
+    tags: ["gambo", "tennis", "sports", "competitive"],
   },
 ];
 

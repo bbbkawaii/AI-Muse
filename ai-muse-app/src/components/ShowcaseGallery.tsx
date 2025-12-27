@@ -38,24 +38,45 @@ export default function ShowcaseGallery() {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="group glass-holographic rounded-2xl border border-glass-border overflow-hidden"
               >
-                <Link href={`/cases/${c.slug}`} className="block">
-                  <div className="relative aspect-[16/9] bg-void/60 overflow-hidden">
-                    {c.thumbnailUrl ? (
-                      <img
-                        src={c.thumbnailUrl}
-                        alt={`${c.title} preview`}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center font-mono text-sm text-text-muted">
-                        No preview
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
-                  </div>
-                </Link>
+                {c.externalUrl ? (
+                  <a href={c.externalUrl} target="_blank" rel="noopener noreferrer" className="block">
+                    <div className="relative aspect-[16/9] bg-void/60 overflow-hidden">
+                      {c.thumbnailUrl ? (
+                        <img
+                          src={c.thumbnailUrl}
+                          alt={`${c.title} preview`}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                      ) : (
+                        <div className="h-full w-full flex items-center justify-center font-mono text-sm text-text-muted">
+                          No preview
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
+                    </div>
+                  </a>
+                ) : (
+                  <Link href={`/cases/${c.slug}`} className="block">
+                    <div className="relative aspect-[16/9] bg-void/60 overflow-hidden">
+                      {c.thumbnailUrl ? (
+                        <img
+                          src={c.thumbnailUrl}
+                          alt={`${c.title} preview`}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                      ) : (
+                        <div className="h-full w-full flex items-center justify-center font-mono text-sm text-text-muted">
+                          No preview
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
+                    </div>
+                  </Link>
+                )}
 
                 <div className="p-6">
                   <div className="flex items-center justify-between gap-4">
@@ -67,14 +88,27 @@ export default function ShowcaseGallery() {
                         {c.title}
                       </h3>
                     </div>
-                    <Link
-                      href={`/cases/${c.slug}`}
-                      className="btn-primary glow-border rounded-xl shrink-0"
-                    >
-                      <span className="inline-flex items-center gap-2">
-                        Open <ArrowRight className="w-4 h-4" />
-                      </span>
-                    </Link>
+                    {c.externalUrl ? (
+                      <a
+                        href={c.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary glow-border rounded-xl shrink-0"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          Open <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </a>
+                    ) : (
+                      <Link
+                        href={`/cases/${c.slug}`}
+                        className="btn-primary glow-border rounded-xl shrink-0"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          Open <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </Link>
+                    )}
                   </div>
 
                   <p className="mt-4 text-text-secondary leading-relaxed">
