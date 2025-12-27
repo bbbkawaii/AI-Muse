@@ -6,8 +6,10 @@ import { Menu, X, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Explore", href: "/#explore" },
   { label: "Gallery", href: "/#gallery" },
+  { label: "Tools", href: "/#tools" },
+  { label: "Agents", href: "/#agents" },
+  { label: "Learn", href: "/#learn" },
   { label: "About", href: "/#about" },
 ];
 
