@@ -297,7 +297,7 @@ function IndustrySection({ industry }: { industry: Industry }) {
 
 export default function EfficiencyMatrix() {
   return (
-    <section id="tools" className="relative py-24 overflow-hidden">
+    <section id="tools" className="relative py-12 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-1/4 left-0 w-96 h-96 rounded-full bg-accent/6 blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 rounded-full bg-accent/5 blur-[150px] pointer-events-none" />

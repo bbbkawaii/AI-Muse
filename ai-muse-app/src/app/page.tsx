@@ -19,7 +19,7 @@ export default function Home() {
       <AgentForge />
       <HowToAcademy />
 
-      <section id="about" className="relative py-24">
+      <section id="about" className="relative py-12">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-6xl mx-auto glass-holographic rounded-2xl border border-glass-border p-8 md:p-12">
             <div className="grid md:grid-cols-2 gap-8 items-center">

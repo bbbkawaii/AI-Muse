@@ -533,7 +533,7 @@ export default function AgentForge() {
   const displayedWorkflows = showAll ? allWorkflows : featuredWorkflows;
 
   return (
-    <section id="agents" className="relative py-24 overflow-hidden">
+    <section id="agents" className="relative py-12 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-[200px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-accent/4 blur-[180px] pointer-events-none" />

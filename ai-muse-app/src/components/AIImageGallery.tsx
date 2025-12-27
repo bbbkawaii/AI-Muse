@@ -73,7 +73,7 @@ export default function AIImageGallery() {
   const duplicatedImages = [...imageItems, ...imageItems];
 
   return (
-    <section id="image" className="relative py-24 overflow-hidden">
+    <section id="image" className="relative py-12 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-end justify-between gap-6 mb-10">

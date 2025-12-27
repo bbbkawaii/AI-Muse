@@ -512,7 +512,7 @@ function TutorialCard({ tutorial }: { tutorial: Tutorial }) {
 
 export default function HowToAcademy() {
   return (
-    <section id="learn" className="relative py-24 overflow-hidden">
+    <section id="learn" className="relative py-12 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-1/3 left-0 w-[600px] h-[600px] rounded-full bg-accent/4 blur-[200px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-0 w-[500px] h-[500px] rounded-full bg-accent/3 blur-[180px] pointer-events-none" />
