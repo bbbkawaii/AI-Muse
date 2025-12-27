@@ -45,7 +45,7 @@ const tutorials: Tutorial[] = [
     readTime: "15 min",
     difficulty: "Intermediate",
     tags: ["LangChain", "RAG", "Python", "Vector DB"],
-    color: "from-neon-blue to-cyan-400",
+    color: "from-sky-400 to-cyan-400",
     steps: [
       {
         title: "Set up your environment",
@@ -115,7 +115,7 @@ retriever = vectorstore.as_retriever(
     readTime: "20 min",
     difficulty: "Advanced",
     tags: ["Deployment", "Docker", "FastAPI", "Production"],
-    color: "from-neon-purple to-violet-400",
+    color: "from-violet-400 to-indigo-400",
     steps: [
       {
         title: "Structure your agent code",
@@ -399,13 +399,13 @@ function TutorialCard({ tutorial }: { tutorial: Tutorial }) {
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-neon-purple/20 to-neon-blue/20 border border-glass-border hover:border-white/20 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-accent/10 border border-accent/20 hover:border-accent/40 transition-colors"
         >
           <span className="font-heading font-medium text-sm text-white">
             {isExpanded ? "Collapse Tutorial" : "Start Learning"}
           </span>
           <ChevronRight
-            className={`w-4 h-4 text-neon-cyan transition-transform duration-300 ${
+            className={`w-4 h-4 text-accent transition-transform duration-300 ${
               isExpanded ? "rotate-90" : ""
             }`}
           />
@@ -431,7 +431,7 @@ function TutorialCard({ tutorial }: { tutorial: Tutorial }) {
                     onClick={() => setCurrentStep(index)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
                       currentStep === index
-                        ? "bg-gradient-to-r from-neon-purple to-neon-blue text-white"
+                        ? "bg-accent text-void"
                         : "bg-white/5 text-text-secondary hover:text-white hover:bg-white/10"
                     }`}
                   >
@@ -514,8 +514,8 @@ export default function HowToAcademy() {
   return (
     <section id="learn" className="relative py-24 overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-1/3 left-0 w-[600px] h-[600px] rounded-full bg-amber-500/5 blur-[200px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-0 w-[500px] h-[500px] rounded-full bg-neon-purple/5 blur-[180px] pointer-events-none" />
+      <div className="absolute top-1/3 left-0 w-[600px] h-[600px] rounded-full bg-accent/4 blur-[200px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-0 w-[500px] h-[500px] rounded-full bg-accent/3 blur-[180px] pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
@@ -528,7 +528,7 @@ export default function HowToAcademy() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-holographic mb-6">
-              <Sparkles className="w-4 h-4 text-amber-400" />
+              <Sparkles className="w-4 h-4 text-accent" />
               <span className="font-mono text-sm text-text-secondary">
                 How-To Academy
               </span>
@@ -536,7 +536,7 @@ export default function HowToAcademy() {
 
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
               <span className="text-white">Learn </span>
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent animate-gradient">
+              <span className="text-accent">
                 AI Development
               </span>
             </h2>

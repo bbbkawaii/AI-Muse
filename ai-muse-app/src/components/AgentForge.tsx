@@ -42,7 +42,7 @@ const agentTemplates: AgentTemplate[] = [
       "A powerful agent that can browse the web, extract information from multiple sources, and synthesize findings into comprehensive reports.",
     icon: <Search className="w-6 h-6" />,
     category: "Research",
-    color: "from-neon-blue to-cyan-400",
+    color: "from-sky-400 to-cyan-400",
     features: [
       "Multi-source web scraping",
       "Automatic fact verification",
@@ -67,7 +67,7 @@ const agentTemplates: AgentTemplate[] = [
       "An intelligent agent that reviews your code for bugs, security vulnerabilities, performance issues, and suggests improvements based on best practices.",
     icon: <FileEdit className="w-6 h-6" />,
     category: "Development",
-    color: "from-neon-purple to-violet-400",
+    color: "from-violet-400 to-indigo-400",
     features: [
       "Static code analysis",
       "Security vulnerability detection",
@@ -256,7 +256,7 @@ function AgentCard({ agent }: { agent: AgentTemplate }) {
               {agent.icon}
             </div>
             <div>
-              <h3 className="font-heading text-lg font-semibold text-white group-hover:text-neon-cyan transition-colors">
+              <h3 className="font-heading text-lg font-semibold text-white group-hover:text-accent transition-colors">
                 {agent.name}
               </h3>
               <p className="text-sm text-text-muted font-mono">{agent.category}</p>
@@ -283,7 +283,7 @@ function AgentCard({ agent }: { agent: AgentTemplate }) {
           {!isExpanded && agent.features.length > 2 && (
             <button
               onClick={() => setIsExpanded(true)}
-              className="px-2.5 py-1 rounded-lg bg-white/5 border border-glass-border text-xs text-neon-cyan hover:bg-white/10 transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-white/5 border border-glass-border text-xs text-accent hover:bg-white/10 transition-colors"
             >
               +{agent.features.length - 2} more
             </button>
@@ -334,7 +334,7 @@ function AgentCard({ agent }: { agent: AgentTemplate }) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-neon-purple to-neon-blue text-white font-heading font-medium text-sm"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-void font-heading font-medium text-sm"
           >
             <Download className="w-4 h-4" />
             <span>Download</span>
@@ -362,8 +362,8 @@ export default function AgentForge() {
   return (
     <section id="agents" className="relative py-24 overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-neon-purple/8 blur-[200px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-neon-cyan/8 blur-[180px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-[200px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-accent/4 blur-[180px] pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
@@ -376,7 +376,7 @@ export default function AgentForge() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-holographic mb-6">
-              <Bot className="w-4 h-4 text-neon-purple" />
+              <Bot className="w-4 h-4 text-accent" />
               <span className="font-mono text-sm text-text-secondary">
                 Agent Forge
               </span>
@@ -384,7 +384,7 @@ export default function AgentForge() {
 
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
               <span className="text-white">Pre-built </span>
-              <span className="bg-gradient-to-r from-neon-purple via-pink-500 to-rose-500 bg-clip-text text-transparent animate-gradient">
+              <span className="text-accent">
                 Agent Templates
               </span>
             </h2>
@@ -445,7 +445,7 @@ export default function AgentForge() {
               All templates are open-source and MIT licensed.{" "}
               <a
                 href="#"
-                className="text-neon-cyan hover:underline underline-offset-4"
+                className="text-accent hover:underline underline-offset-4"
               >
                 Contribute your own template
               </a>

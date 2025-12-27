@@ -22,7 +22,7 @@ export default function Home() {
               <div>
                 <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
                   <span className="text-white">About </span>
-                  <span className="bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+                  <span className="text-accent">
                     AI-Muse
                   </span>
                 </h2>
@@ -39,25 +39,25 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="glass rounded-xl p-6 text-center">
-                  <div className="font-heading text-3xl font-bold bg-gradient-to-r from-neon-blue to-neon-cyan bg-clip-text text-transparent">
+                  <div className="font-heading text-3xl font-bold text-accent">
                     50+
                   </div>
                   <div className="text-sm text-text-muted mt-1">AI Demos</div>
                 </div>
                 <div className="glass rounded-xl p-6 text-center">
-                  <div className="font-heading text-3xl font-bold bg-gradient-to-r from-neon-purple to-pink-500 bg-clip-text text-transparent">
+                  <div className="font-heading text-3xl font-bold text-accent">
                     15+
                   </div>
                   <div className="text-sm text-text-muted mt-1">AI Tools</div>
                 </div>
                 <div className="glass rounded-xl p-6 text-center">
-                  <div className="font-heading text-3xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                  <div className="font-heading text-3xl font-bold text-accent">
                     6
                   </div>
                   <div className="text-sm text-text-muted mt-1">Agent Templates</div>
                 </div>
                 <div className="glass rounded-xl p-6 text-center">
-                  <div className="font-heading text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+                  <div className="font-heading text-3xl font-bold text-accent">
                     Open
                   </div>
                   <div className="text-sm text-text-muted mt-1">Source</div>

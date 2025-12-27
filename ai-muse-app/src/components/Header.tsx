@@ -51,14 +51,14 @@ export default function Header() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-blue rounded-lg blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
-                <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-neon-purple to-neon-blue">
-                  <Sparkles className="w-5 h-5 text-white" />
+                <div className="absolute inset-0 bg-accent rounded-lg blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
+                <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-accent">
+                  <Sparkles className="w-5 h-5 text-void" />
                 </div>
               </div>
               <span className="font-heading text-xl font-bold tracking-tight">
                 <span className="text-white">AI</span>
-                <span className="bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+                <span className="text-accent">
                   Muse
                 </span>
               </span>

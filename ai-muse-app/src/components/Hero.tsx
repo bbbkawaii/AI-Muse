@@ -46,23 +46,23 @@ export default function Hero() {
       id="explore"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16"
     >
-      {/* Floating orbs decoration */}
+      {/* Floating orbs decoration - single accent color */}
       <motion.div
         variants={floatingVariants}
         animate="animate"
-        className="absolute top-1/4 left-[10%] w-64 h-64 rounded-full bg-neon-purple/20 blur-[100px] pointer-events-none"
+        className="absolute top-1/4 left-[10%] w-64 h-64 rounded-full bg-accent/10 blur-[100px] pointer-events-none"
       />
       <motion.div
         variants={floatingVariants}
         animate="animate"
         style={{ animationDelay: "2s" }}
-        className="absolute bottom-1/4 right-[15%] w-80 h-80 rounded-full bg-neon-blue/15 blur-[120px] pointer-events-none"
+        className="absolute bottom-1/4 right-[15%] w-80 h-80 rounded-full bg-accent/8 blur-[120px] pointer-events-none"
       />
       <motion.div
         variants={floatingVariants}
         animate="animate"
         style={{ animationDelay: "4s" }}
-        className="absolute top-1/2 right-[5%] w-48 h-48 rounded-full bg-neon-cyan/10 blur-[80px] pointer-events-none"
+        className="absolute top-1/2 right-[5%] w-48 h-48 rounded-full bg-accent/6 blur-[80px] pointer-events-none"
       />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -90,7 +90,7 @@ export default function Hero() {
               Where AI
             </span>
             <span className="block text-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
-              <span className="bg-gradient-to-r from-neon-purple via-neon-blue to-neon-cyan bg-clip-text text-transparent animate-gradient">
+              <span className="text-accent">
                 Creativity
               </span>
             </span>
@@ -121,14 +121,14 @@ export default function Hero() {
               href="#gallery"
               className="group relative px-8 py-4 rounded-2xl font-heading font-semibold text-lg overflow-hidden"
             >
-              {/* Glow effect background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-neon-purple via-neon-blue to-neon-cyan opacity-100 group-hover:opacity-90 transition-opacity" />
+              {/* Solid color background */}
+              <div className="absolute inset-0 bg-accent opacity-100 group-hover:opacity-90 transition-opacity" />
 
-              {/* Animated border glow */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-neon-purple via-neon-blue to-neon-cyan rounded-2xl blur-lg opacity-50 group-hover:opacity-80 transition-opacity animate-pulse-glow" />
+              {/* Glow effect */}
+              <div className="absolute -inset-1 bg-accent rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
 
               {/* Button content */}
-              <span className="relative z-10 flex items-center gap-2 text-white">
+              <span className="relative z-10 flex items-center gap-2 text-void">
                 Explore Gallery
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>

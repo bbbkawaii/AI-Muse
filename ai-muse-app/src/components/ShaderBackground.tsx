@@ -108,25 +108,23 @@ const fragmentShader = `
     // Combine noise layers
     float combinedNoise = noise1 * 0.5 + noise2 * 0.3 + noise3 * 0.2;
 
-    // Color palette - deep void with neon accents
+    // Color palette - deep void with single ice blue accent
     vec3 voidColor = vec3(0.012, 0.012, 0.02);
-    vec3 purpleNeon = vec3(0.545, 0.361, 0.965);  // #8B5CF6
-    vec3 blueNeon = vec3(0.231, 0.51, 0.965);     // #3B82F6
-    vec3 cyanNeon = vec3(0.024, 0.714, 0.831);    // #06B6D4
+    vec3 accentColor = vec3(0.0, 0.831, 1.0);  // #00D4FF - Electric Ice Blue
 
-    // Create gradient blobs
+    // Create gradient blobs - all using the same accent color with varying intensity
     float blob1 = smoothstep(0.4, 0.0, length(uv - vec2(0.3, 0.7) + noise1 * 0.1));
     float blob2 = smoothstep(0.5, 0.0, length(uv - vec2(0.8, 0.3) + noise2 * 0.15));
     float blob3 = smoothstep(0.45, 0.0, length(uv - vec2(0.5 + mouseInfluence.x * 0.2, 0.5 + mouseInfluence.y * 0.2) + noise3 * 0.1));
 
-    // Mix colors based on blobs
+    // Mix colors based on blobs - single color, varying opacity
     vec3 color = voidColor;
-    color = mix(color, purpleNeon, blob1 * 0.15 * (1.0 + combinedNoise * 0.5));
-    color = mix(color, blueNeon, blob2 * 0.12 * (1.0 + combinedNoise * 0.3));
-    color = mix(color, cyanNeon, blob3 * 0.1 * (1.0 + combinedNoise * 0.4));
+    color = mix(color, accentColor, blob1 * 0.08 * (1.0 + combinedNoise * 0.5));
+    color = mix(color, accentColor, blob2 * 0.06 * (1.0 + combinedNoise * 0.3));
+    color = mix(color, accentColor, blob3 * 0.05 * (1.0 + combinedNoise * 0.4));
 
     // Add mouse glow
-    color += purpleNeon * mouseGlow * 0.3;
+    color += accentColor * mouseGlow * 0.2;
 
     // Subtle vignette
     float vignette = 1.0 - smoothstep(0.4, 1.0, length(uv - 0.5));

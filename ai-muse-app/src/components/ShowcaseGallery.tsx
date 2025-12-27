@@ -13,7 +13,7 @@ export default function ShowcaseGallery() {
           <div className="flex items-end justify-between gap-6 mb-10">
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
-                <Sparkles className="w-4 h-4 text-neon-cyan" />
+                <Sparkles className="w-4 h-4 text-accent" />
                 <span className="font-mono text-sm text-text-secondary">
                   Case Gallery
                 </span>

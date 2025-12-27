@@ -66,7 +66,7 @@ const industries: Industry[] = [
   {
     name: "Development",
     icon: <Code className="w-5 h-5" />,
-    color: "from-neon-blue to-neon-cyan",
+    color: "from-sky-400 to-cyan-400",
     tools: [
       {
         name: "GitHub Copilot",
@@ -96,7 +96,7 @@ const industries: Industry[] = [
   {
     name: "Content & Writing",
     icon: <FileText className="w-5 h-5" />,
-    color: "from-neon-purple to-indigo-500",
+    color: "from-violet-400 to-indigo-400",
     tools: [
       {
         name: "ChatGPT",
@@ -239,7 +239,7 @@ function ToolCard({ tool, color }: { tool: AITool; color: string }) {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-heading font-semibold text-white group-hover:text-neon-cyan transition-colors">
+                <h4 className="font-heading font-semibold text-white group-hover:text-accent transition-colors">
                   {tool.name}
                 </h4>
                 {tool.highlight && (
@@ -299,8 +299,8 @@ export default function EfficiencyMatrix() {
   return (
     <section id="tools" className="relative py-24 overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 rounded-full bg-neon-purple/10 blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 rounded-full bg-neon-blue/10 blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/4 left-0 w-96 h-96 rounded-full bg-accent/6 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 rounded-full bg-accent/5 blur-[150px] pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
@@ -313,7 +313,7 @@ export default function EfficiencyMatrix() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-holographic mb-6">
-              <Cpu className="w-4 h-4 text-neon-blue" />
+              <Cpu className="w-4 h-4 text-accent" />
               <span className="font-mono text-sm text-text-secondary">
                 Efficiency Matrix
               </span>
@@ -321,7 +321,7 @@ export default function EfficiencyMatrix() {
 
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
               <span className="text-white">AI Tools for </span>
-              <span className="bg-gradient-to-r from-neon-blue via-neon-purple to-neon-cyan bg-clip-text text-transparent animate-gradient">
+              <span className="text-accent">
                 Every Industry
               </span>
             </h2>

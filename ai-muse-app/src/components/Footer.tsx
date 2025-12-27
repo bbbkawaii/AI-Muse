@@ -69,11 +69,11 @@ function InfiniteMarquee() {
           <div key={i} className="flex items-center gap-8 mx-8">
             <span className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               <span className="text-white">{marqueeText.split(" ").slice(0, 2).join(" ")} </span>
-              <span className="bg-gradient-to-r from-neon-purple via-neon-blue to-neon-cyan bg-clip-text text-transparent">
+              <span className="text-accent">
                 {marqueeText.split(" ").slice(2).join(" ")}
               </span>
             </span>
-            <Sparkles className="w-10 h-10 text-neon-purple" />
+            <Sparkles className="w-10 h-10 text-accent" />
           </div>
         ))}
       </motion.div>
@@ -90,7 +90,7 @@ export default function Footer() {
       {/* Main Footer Content */}
       <div className="relative py-16 overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-neon-purple/10 blur-[200px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-accent/8 blur-[200px] pointer-events-none" />
 
         <div className="container mx-auto px-4 md:px-6 relative">
           <div className="max-w-6xl mx-auto">
@@ -104,14 +104,14 @@ export default function Footer() {
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-blue rounded-xl blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
-                    <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-blue">
-                      <Sparkles className="w-6 h-6 text-white" />
+                    <div className="absolute inset-0 bg-accent rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
+                    <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-accent">
+                      <Sparkles className="w-6 h-6 text-void" />
                     </div>
                   </div>
                   <span className="font-heading text-2xl font-bold tracking-tight">
                     <span className="text-white">AI</span>
-                    <span className="bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+                    <span className="text-accent">
                       Muse
                     </span>
                   </span>
@@ -154,13 +154,13 @@ export default function Footer() {
                   <input
                     type="email"
                     placeholder="your@email.com"
-                    className="flex-1 min-w-0 px-4 py-3 rounded-xl glass border border-glass-border bg-transparent text-white placeholder:text-text-muted focus:outline-none focus:border-neon-purple/50 transition-colors font-mono text-sm"
+                    className="flex-1 min-w-0 px-4 py-3 rounded-xl glass border border-glass-border bg-transparent text-white placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors font-mono text-sm"
                   />
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-neon-purple to-neon-blue text-white font-heading font-semibold text-sm"
+                    className="px-6 py-3 rounded-xl bg-accent text-void font-heading font-semibold text-sm"
                   >
                     Subscribe
                   </motion.button>
