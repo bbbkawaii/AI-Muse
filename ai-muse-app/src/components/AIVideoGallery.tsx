@@ -181,7 +181,7 @@ export default function AIVideoGallery() {
                 AI Video Lab
               </h2>
               <p className="mt-3 text-text-secondary max-w-2xl">
-                探索由AI生成的视频作品，见证人工智能在视频创作领域的无限可能。
+                Explore AI-generated videos and witness the infinite possibilities of AI in video creation.
               </p>
             </div>
           </div>

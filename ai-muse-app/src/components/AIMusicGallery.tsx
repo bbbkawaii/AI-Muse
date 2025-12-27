@@ -332,7 +332,7 @@ export default function AIMusicGallery() {
                 AI Music Lab
               </h2>
               <p className="mt-3 text-text-secondary max-w-2xl">
-                探索由AI生成的音乐作品，体验人工智能与音乐创作的完美融合。
+                Explore AI-generated music and experience the fusion of artificial intelligence and music creation.
               </p>
             </div>
           </div>

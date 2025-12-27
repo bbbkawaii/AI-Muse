@@ -88,7 +88,7 @@ export default function AIImageGallery() {
                 AI Image Lab
               </h2>
               <p className="mt-3 text-text-secondary max-w-2xl">
-                探索由AI生成的图像作品，感受人工智能在视觉艺术领域的创造力。
+                Explore AI-generated images and experience the creativity of artificial intelligence in visual arts.
               </p>
             </div>
           </div>

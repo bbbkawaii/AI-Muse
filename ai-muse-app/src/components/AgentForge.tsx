@@ -381,9 +381,9 @@ function DifficultyBadge({ level }: { level: WorkflowTemplate["difficulty"] }) {
   };
 
   const labels = {
-    Beginner: "入门",
-    Intermediate: "进阶",
-    Advanced: "高级",
+    Beginner: "Beginner",
+    Intermediate: "Intermediate",
+    Advanced: "Advanced",
   };
 
   return (
@@ -468,7 +468,7 @@ function WorkflowCard({ workflow }: { workflow: WorkflowTemplate }) {
             animate={{ opacity: 1 }}
             className="mb-4 flex items-center gap-2 text-xs text-text-muted"
           >
-            <span>来源:</span>
+            <span>Source:</span>
             <span className="text-accent">{workflow.source}</span>
           </motion.div>
         )}
@@ -490,8 +490,8 @@ function WorkflowCard({ workflow }: { workflow: WorkflowTemplate }) {
                 </div>
               </div>
               <div className="p-4 text-xs text-text-secondary">
-                <p>将此 DSL 文件导入 Dify 即可使用。</p>
-                <p className="mt-2 text-text-muted">需要 Dify 0.13.0 及以上版本。</p>
+                <p>Import this DSL file into Dify to use.</p>
+                <p className="mt-2 text-text-muted">Requires Dify 0.13.0 or above.</p>
               </div>
             </div>
           </motion.div>
@@ -506,7 +506,7 @@ function WorkflowCard({ workflow }: { workflow: WorkflowTemplate }) {
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-void font-heading font-medium text-sm"
           >
             <Download className="w-4 h-4" />
-            <span>下载 DSL</span>
+            <span>Download DSL</span>
           </motion.button>
 
           <motion.button
@@ -556,15 +556,15 @@ export default function AgentForge() {
             </div>
 
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
-              <span className="text-white">开箱即用的 </span>
+              <span className="text-white">Ready-to-Use </span>
               <span className="text-accent">
-                工作流模板
+                Workflow Templates
               </span>
             </h2>
 
             <p className="max-w-2xl mx-auto text-text-secondary text-lg leading-relaxed mb-8">
-              精选 Dify 工作流模板，涵盖翻译、搜索、Agent、代码生成等多种场景。
-              下载 DSL 文件导入 Dify 即可使用。
+              Curated Dify workflow templates covering translation, search, Agent, code generation and more.
+              Download DSL files and import to Dify to use.
             </p>
 
             {/* Quick actions */}
@@ -578,7 +578,7 @@ export default function AgentForge() {
               >
                 <Github className="w-4 h-4" />
                 <span className="font-heading font-medium text-sm text-text-secondary">
-                  GitHub 仓库
+                  GitHub Repo
                 </span>
               </motion.a>
               <motion.a
@@ -590,7 +590,7 @@ export default function AgentForge() {
               >
                 <Zap className="w-4 h-4 text-neon-acid" />
                 <span className="font-heading font-medium text-sm text-text-secondary">
-                  Dify 学习教程
+                  Dify Tutorials
                 </span>
               </motion.a>
             </div>
@@ -624,7 +624,7 @@ export default function AgentForge() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass border border-glass-border hover:bg-white/5 transition-colors"
             >
               <span className="font-heading font-medium text-text-secondary">
-                {showAll ? "收起" : `查看全部 ${allWorkflows.length} 个工作流`}
+                {showAll ? "Show Less" : `View All ${allWorkflows.length} Workflows`}
               </span>
               <ChevronDown
                 className={`w-4 h-4 text-accent transition-transform duration-300 ${
@@ -643,7 +643,7 @@ export default function AgentForge() {
             className="mt-8 text-center"
           >
             <p className="text-sm text-text-muted">
-              所有工作流来自{" "}
+              All workflows from{" "}
               <a
                 href="https://github.com/svcvit/Awesome-Dify-Workflow"
                 target="_blank"
@@ -652,7 +652,7 @@ export default function AgentForge() {
               >
                 Awesome-Dify-Workflow
               </a>
-              {" "}开源项目，需要 Dify 0.13.0+ 版本。
+              {" "}open source project. Requires Dify 0.13.0+.
             </p>
           </motion.div>
         </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Heart, Star, ArrowUpRight, Play, Pause, Sparkles, Zap, Wand2 } from "lucide-react";
 
-// 使用 id 生成固定的随机数
+// Generate fixed random number using id
 function seededRandom(seed: string) {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -37,14 +37,14 @@ function formatTime(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
-// 精选内容数据
+// Featured content data
 const featuredItems = [
   {
     id: "soul-nebula",
     type: "case" as const,
     title: "Soul Nebula",
-    subtitle: "情绪卡片星云",
-    description: "沉浸式3D情绪卡片星云体验，数百张漂浮卡片通过手势交互，触发粒子爆炸效果",
+    subtitle: "Emotion Card Nebula",
+    description: "Immersive 3D emotion card nebula experience with hundreds of floating cards, gesture interaction triggers particle explosion effects",
     thumbnailUrl: "/demos/soul-nebula/thumbnail.png",
     category: "3D Interactive",
     href: "/cases/soul-nebula",
@@ -56,9 +56,9 @@ const featuredItems = [
   {
     id: "asmr-glass-fruit",
     type: "video" as const,
-    title: "AI软萌ASMR",
-    subtitle: "割玻璃水果",
-    description: "治愈系AI生成视频，玻璃质感水果的切割ASMR体验",
+    title: "AI Soft ASMR",
+    subtitle: "Glass Fruit Cutting",
+    description: "Therapeutic AI-generated video, glass texture fruit cutting ASMR experience",
     thumbnailUrl: "/ai-videos/7.jpg",
     category: "AI Video",
     href: "/videos/asmr-glass-fruit",
@@ -70,9 +70,9 @@ const featuredItems = [
   {
     id: "kill-american",
     type: "music" as const,
-    title: "斩杀那个美利坚人",
+    title: "Kill That American",
     subtitle: "AI Cover",
-    description: "AI翻唱《杀死那个石家庄人》，摇滚精神的跨文化演绎",
+    description: "AI cover of 'Kill That Shijiazhuang Guy', cross-cultural interpretation of rock spirit",
     thumbnailUrl: "/ai-music/kill-american.jpg",
     audioUrl: "/ai-music/kill-american.mp3",
     category: "AI Music",
@@ -84,13 +84,13 @@ const featuredItems = [
   },
 ];
 
-// 初始化统计数据
+// Initialize stats data
 const initialStats = featuredItems.reduce((acc, item) => {
   acc[item.id] = generateStats(item.id);
   return acc;
 }, {} as Record<string, { likes: number; stars: number }>);
 
-// 3D 倾斜卡片组件
+// 3D tilt card component
 function TiltCard({
   children,
   className = "",
@@ -143,7 +143,7 @@ function TiltCard({
   );
 }
 
-// 主卡片（大尺寸）
+// Main card (large size)
 function FeaturedMainCard({
   item,
   isLiked,
@@ -172,15 +172,15 @@ function FeaturedMainCard({
         className="group relative h-full rounded-3xl overflow-hidden"
         style={{ transformStyle: "preserve-3d" }}
       >
-        {/* 背景渐变光晕 */}
+        {/* Background gradient glow */}
         <div
           className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
         />
 
-        {/* 玻璃背景 */}
+        {/* Glass background */}
         <div className="absolute inset-0 bg-void-elevated/80 backdrop-blur-xl" />
 
-        {/* 网格装饰 */}
+        {/* Grid decoration */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -190,10 +190,10 @@ function FeaturedMainCard({
           }}
         />
 
-        {/* 边框 */}
+        {/* Border */}
         <div className="absolute inset-0 rounded-3xl border border-white/10 group-hover:border-white/20 transition-colors duration-500" />
 
-        {/* 发光边框效果 */}
+        {/* Glowing border effect */}
         <div
           className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
@@ -202,7 +202,7 @@ function FeaturedMainCard({
         />
 
         <Link href={item.href} className="block relative h-full p-6 md:p-8">
-          {/* 顶部标签 */}
+          {/* Top label */}
           <div className="flex items-center justify-between mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
               <IconComponent className="w-3.5 h-3.5 text-accent" />
@@ -211,7 +211,7 @@ function FeaturedMainCard({
               </span>
             </div>
 
-            {/* 统计 */}
+            {/* Stats */}
             <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <button
                 onClick={onLike}
@@ -242,7 +242,7 @@ function FeaturedMainCard({
             </div>
           </div>
 
-          {/* 图片区域 */}
+          {/* Image area */}
           <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-6">
             <img
               src={item.thumbnailUrl}
@@ -251,7 +251,7 @@ function FeaturedMainCard({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-void-elevated via-transparent to-transparent" />
 
-            {/* 悬浮箭头 */}
+            {/* Floating arrow */}
             <div
               className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-accent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:translate-x-0 translate-x-4"
               style={{
@@ -263,7 +263,7 @@ function FeaturedMainCard({
             </div>
           </div>
 
-          {/* 内容 */}
+          {/* Content */}
           <div style={{ transform: "translateZ(30px)" }}>
             <h3 className="font-heading text-2xl md:text-3xl font-bold text-white mb-1">
               {item.title}
@@ -273,7 +273,7 @@ function FeaturedMainCard({
               {item.description}
             </p>
 
-            {/* 标签 */}
+            {/* Tags */}
             <div className="flex flex-wrap gap-2">
               {item.tags.map((tag) => (
                 <span
@@ -291,7 +291,7 @@ function FeaturedMainCard({
   );
 }
 
-// 卡片组件
+// Card component
 function FeaturedSideCard({
   item,
   index,
@@ -353,16 +353,16 @@ function FeaturedSideCard({
         transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="group relative h-full rounded-2xl overflow-hidden"
       >
-        {/* 背景 */}
+        {/* Background */}
         <div
           className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
         />
         <div className="absolute inset-0 bg-void-elevated/90 backdrop-blur-xl" />
 
-        {/* 边框 */}
+        {/* Border */}
         <div className="absolute inset-0 rounded-2xl border border-white/10 group-hover:border-white/20 transition-colors duration-500" />
 
-        {/* 发光效果 */}
+        {/* Glow effect */}
         <div
           className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
@@ -371,7 +371,7 @@ function FeaturedSideCard({
         />
 
         <Link href={item.href} className="block relative h-full p-5">
-          {/* 图片 */}
+          {/* Image */}
           <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4">
             <img
               src={item.thumbnailUrl}
@@ -380,7 +380,7 @@ function FeaturedSideCard({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-void-elevated/80 via-transparent to-transparent" />
 
-            {/* 播放按钮（仅音乐） */}
+            {/* Play button (music only) */}
             {item.type === "music" && (
               <button
                 onClick={handlePlayPause}
@@ -403,7 +403,7 @@ function FeaturedSideCard({
               </button>
             )}
 
-            {/* 进度条 */}
+            {/* Progress bar */}
             {item.type === "music" && (isPlaying || progress > 0) && (
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
                 <div
@@ -413,7 +413,7 @@ function FeaturedSideCard({
               </div>
             )}
 
-            {/* 类型标签 */}
+            {/* Type label */}
             <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-void/60 backdrop-blur-sm border border-white/10">
               <IconComponent className="w-3 h-3 text-accent" />
               <span className="font-mono text-[10px] text-white/80 uppercase">
@@ -422,7 +422,7 @@ function FeaturedSideCard({
             </div>
           </div>
 
-          {/* 内容 */}
+          {/* Content */}
           <div>
             <div className="flex items-start justify-between gap-3 mb-2">
               <div>
@@ -438,7 +438,7 @@ function FeaturedSideCard({
               {item.description}
             </p>
 
-            {/* 互动统计 */}
+            {/* Interaction stats */}
             <div className="flex items-center gap-4">
               <button
                 onClick={onLike}
@@ -470,7 +470,7 @@ function FeaturedSideCard({
           </div>
         </Link>
 
-        {/* 隐藏的音频元素 */}
+        {/* Hidden audio element */}
         {item.type === "music" && "audioUrl" in item && (
           <audio
             ref={audioRef}
@@ -523,9 +523,9 @@ export default function OmniModalCreativeLab() {
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
-      {/* 背景装饰 */}
+      {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* 顶部渐变光晕 */}
+        {/* Top gradient glow */}
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-30"
           style={{
@@ -534,13 +534,13 @@ export default function OmniModalCreativeLab() {
           }}
         />
 
-        {/* 装饰线条 */}
+        {/* Decorative line */}
         <div className="absolute top-20 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative">
         <div className="max-w-6xl mx-auto">
-          {/* 标题区域 */}
+          {/* Title area */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -548,7 +548,7 @@ export default function OmniModalCreativeLab() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12 md:mb-16"
           >
-            {/* 小标签 */}
+            {/* Small label */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -565,21 +565,21 @@ export default function OmniModalCreativeLab() {
               </span>
             </motion.div>
 
-            {/* 主标题 */}
+            {/* Main title */}
             <h2 className="text-display text-4xl md:text-5xl lg:text-6xl text-white mb-4">
               <span className="block">Omni-modal AI</span>
               <span className="block text-accent">Creative Lab</span>
             </h2>
 
-            {/* 副标题 */}
+            {/* Subtitle */}
             <p className="text-text-secondary text-lg md:text-xl max-w-2xl mx-auto">
-              探索跨模态AI创作的无限可能
+              Explore the infinite possibilities of cross-modal AI creation
               <span className="mx-2 text-accent">|</span>
-              3D互动 / 视频生成 / 音乐创作
+              3D Interactive / Video Generation / Music Creation
             </p>
           </motion.div>
 
-          {/* 三列等宽布局 */}
+          {/* Three equal-width columns layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {featuredItems.map((item, index) => (
               <FeaturedSideCard
