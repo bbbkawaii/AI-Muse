@@ -40,7 +40,9 @@ export default function Header() {
           <nav
             className={cn(
               "relative flex items-center justify-between rounded-2xl px-6 py-4 transition-all duration-500",
-              isScrolled ? "glass-holographic" : "bg-transparent"
+              isScrolled
+                ? "bg-[rgba(0,212,255,0.03)] backdrop-blur-[30px] border border-white/10 shadow-[0_0_40px_rgba(0,212,255,0.06),inset_0_0_60px_rgba(255,255,255,0.02)]"
+                : "bg-transparent"
             )}
           >
             {/* Logo */}
@@ -165,7 +167,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-[80%] max-w-sm glass-holographic border-l border-glass-border p-8 pt-24"
+              className="absolute right-0 top-0 bottom-0 w-[80%] max-w-sm bg-[rgba(0,212,255,0.03)] backdrop-blur-[30px] border-l border-white/10 shadow-[0_0_40px_rgba(0,212,255,0.06),inset_0_0_60px_rgba(255,255,255,0.02)] p-8 pt-24"
             >
               <div className="flex flex-col gap-2">
                 {navLinks.map((link, index) => (
