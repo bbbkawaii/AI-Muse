@@ -82,11 +82,11 @@ export default function Header() {
               className="hidden md:flex flex-1 max-w-md mx-8"
             >
               <div className="relative w-full group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent transition-colors" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent/70 group-focus-within:text-accent transition-colors" />
                 <input
                   type="text"
                   placeholder="Search demos, tools, agents..."
-                  className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/[0.03] backdrop-blur-[20px] border border-white/[0.08] text-sm text-white placeholder:text-text-muted focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
+                  className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/[0.08] backdrop-blur-[20px] border border-accent/30 text-sm text-white placeholder:text-text-secondary focus:outline-none focus:border-accent focus:bg-white/[0.12] focus:shadow-[0_0_20px_rgba(0,212,255,0.15)] transition-all"
                   style={{
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
@@ -190,11 +190,11 @@ export default function Header() {
             >
               {/* Mobile Search */}
               <div className="relative w-full mb-6">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent/70" />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.08] border border-accent/30 text-sm text-white placeholder:text-text-secondary focus:outline-none focus:border-accent focus:shadow-[0_0_20px_rgba(0,212,255,0.15)] transition-all"
                 />
               </div>
 
