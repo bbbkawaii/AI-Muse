@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -74,7 +74,28 @@ export default function Header() {
               </span>
             </motion.a>
 
-            {/* Desktop Navigation */}
+            {/* Search Bar - Center */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="hidden md:flex flex-1 max-w-md mx-8"
+            >
+              <div className="relative w-full group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Search demos, tools, agents..."
+                  className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/[0.03] backdrop-blur-[20px] border border-white/[0.08] text-sm text-white placeholder:text-text-muted focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
+                  style={{
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                  }}
+                />
+              </div>
+            </motion.div>
+
+            {/* Desktop Navigation - Right */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link, index) => (
                 <motion.a
@@ -83,7 +104,7 @@ export default function Header() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index, duration: 0.5 }}
-                  className="relative px-5 py-2.5 font-heading font-medium text-sm text-text-secondary hover:text-white transition-colors group"
+                  className="relative px-4 py-2.5 font-heading font-medium text-sm text-text-secondary hover:text-white transition-colors group"
                 >
                   <span className="relative z-10">{link.label}</span>
                   {/* Hover background effect */}
@@ -93,28 +114,6 @@ export default function Header() {
                   />
                 </motion.a>
               ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="hidden md:flex items-center gap-3">
-              <motion.button
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
-                className="btn-ghost text-sm"
-              >
-                Sign In
-              </motion.button>
-              <motion.button
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 }}
-                className="btn-primary text-sm glow-border rounded-xl"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span>Start Creating</span>
-              </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -189,6 +188,16 @@ export default function Header() {
                 WebkitBackdropFilter: "blur(30px)",
               }}
             >
+              {/* Mobile Search */}
+              <div className="relative w-full mb-6">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-all"
+                />
+              </div>
+
               <div className="flex flex-col gap-2">
                 {navLinks.map((link, index) => (
                   <motion.a
@@ -203,15 +212,6 @@ export default function Header() {
                     {link.label}
                   </motion.a>
                 ))}
-              </div>
-
-              <div className="mt-8 flex flex-col gap-3">
-                <button className="btn-ghost w-full justify-center">
-                  Sign In
-                </button>
-                <button className="btn-primary w-full justify-center glow-border rounded-xl">
-                  <span>Start Creating</span>
-                </button>
               </div>
             </motion.nav>
           </motion.div>

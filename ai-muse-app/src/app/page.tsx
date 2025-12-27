@@ -1,7 +1,7 @@
-import Hero from "@/components/Hero";
 import AppShell from "@/components/AppShell";
 import ShowcaseGallery from "@/components/ShowcaseGallery";
 import AIVideoGallery from "@/components/AIVideoGallery";
+import AIImageGallery from "@/components/AIImageGallery";
 import AIMusicGallery from "@/components/AIMusicGallery";
 import EfficiencyMatrix from "@/components/EfficiencyMatrix";
 import AgentForge from "@/components/AgentForge";
@@ -11,9 +11,9 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <AppShell>
-      <Hero />
       <ShowcaseGallery />
       <AIVideoGallery />
+      <AIImageGallery />
       <AIMusicGallery />
       <EfficiencyMatrix />
       <AgentForge />
