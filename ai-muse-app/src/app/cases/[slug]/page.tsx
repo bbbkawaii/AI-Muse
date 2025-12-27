@@ -9,6 +9,10 @@ import SourceFilesDisplay, {
   type SourceFile,
 } from "@/components/SourceFilesDisplay";
 import { getShowcaseCase, type CaseSourceFile } from "@/lib/cases";
+import CaseDetailsCollapsible from "@/components/CaseDetailsCollapsible";
+
+// 前三个 case 默认折叠详情
+const collapsedByDefaultSlugs = ["christmas-tree", "soul-nebula", "earth-saturn"];
 
 type RouteParams = { slug: string };
 
@@ -75,26 +79,35 @@ export default async function CasePage({
               />
             </div>
 
-            <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <PromptDisplay prompt={showcaseCase.prompt} />
-              <section className="glass rounded-2xl border border-glass-border p-6">
-                <h2 className="font-heading font-semibold text-white">
-                  Notes
-                </h2>
-                <ul className="mt-4 space-y-2 text-sm text-text-secondary leading-relaxed">
-                  <li>
-                    Camera gesture control requires allowing camera permission in
-                    the browser.
-                  </li>
-                  <li>
-                    If camera permission is blocked, the demo still supports
-                    mouse interaction.
-                  </li>
-                </ul>
-              </section>
-            </div>
+            <section className="mt-6 glass rounded-2xl border border-glass-border p-6">
+              <h2 className="font-heading font-semibold text-white">
+                Notes
+              </h2>
+              <ul className="mt-4 space-y-2 text-sm text-text-secondary leading-relaxed">
+                <li>
+                  Camera gesture control requires allowing camera permission in
+                  the browser.
+                </li>
+                <li>
+                  If camera permission is blocked, the demo still supports
+                  mouse interaction.
+                </li>
+              </ul>
+            </section>
 
-            <SourceFilesDisplay files={sourceFiles} />
+            <CaseDetailsCollapsible
+              title="Prompt"
+              defaultCollapsed={collapsedByDefaultSlugs.includes(slug)}
+            >
+              <PromptDisplay prompt={showcaseCase.prompt} />
+            </CaseDetailsCollapsible>
+
+            <CaseDetailsCollapsible
+              title="Source Files"
+              defaultCollapsed={collapsedByDefaultSlugs.includes(slug)}
+            >
+              <SourceFilesDisplay files={sourceFiles} />
+            </CaseDetailsCollapsible>
           </div>
         </div>
       </section>
