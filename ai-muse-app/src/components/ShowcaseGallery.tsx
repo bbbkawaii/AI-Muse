@@ -1,11 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Sparkles, ChevronDown } from "lucide-react";
 import { showcaseCases } from "@/lib/cases";
 
 export default function ShowcaseGallery() {
+  const [expanded, setExpanded] = useState(false);
+  const visibleCases = expanded ? showcaseCases : showcaseCases.slice(0, 6);
+  const hasMore = showcaseCases.length > 6;
+
   return (
     <section id="gallery" className="relative py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -29,7 +34,7 @@ export default function ShowcaseGallery() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {showcaseCases.map((c, index) => (
+            {visibleCases.map((c, index) => (
               <motion.div
                 key={c.slug}
                 initial={{ opacity: 0, y: 16 }}
@@ -129,6 +134,24 @@ export default function ShowcaseGallery() {
               </motion.div>
             ))}
           </div>
+
+          {hasMore && (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl glass border border-glass-border hover:border-accent/50 transition-colors"
+              >
+                <span className="text-text-secondary group-hover:text-white transition-colors">
+                  {expanded ? "收起" : `展开更多 (${showcaseCases.length - 6})`}
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 text-accent transition-transform duration-300 ${
+                    expanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
