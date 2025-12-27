@@ -1,94 +1,61 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Video, Play, Pause, X } from "lucide-react";
+import { Video, Heart, Star } from "lucide-react";
+import { videoItems, type VideoItem } from "@/lib/videos";
 
-interface VideoItem {
-  id: string;
-  title: string;
-  description: string;
-  coverUrl: string;
-  videoUrl: string;
-  orientation: "portrait" | "landscape";
+// 使用 id 生成固定的随机数
+function seededRandom(seed: string) {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
 }
 
-const videoItems: VideoItem[] = [
-  {
-    id: "suxi-fish",
-    title: "卧室溯溪抓鱼自由",
-    description: "把空调管连上屋顶的太阳能热水器，在卧室里舒舒服服的溯溪",
-    coverUrl: "/ai-videos/1.jpg",
-    videoUrl: "/ai-videos/1.mp4",
-    orientation: "portrait",
-  },
-  {
-    id: "apple-parkour",
-    title: "大苹果跑酷",
-    description: "海螺AI首尾帧大幅度运镜，大苹果玩出蜘蛛侠穿越的质感",
-    coverUrl: "/ai-videos/2.jpg",
-    videoUrl: "/ai-videos/2.mp4",
-    orientation: "portrait",
-  },
-  {
-    id: "tianjin-chill",
-    title: "天津的松弛感",
-    description: "天津的松弛感拉满了",
-    coverUrl: "/ai-videos/3.jpg",
-    videoUrl: "/ai-videos/3.mp4",
-    orientation: "portrait",
-  },
-  {
-    id: "tianjin-ad",
-    title: "天津老字号沙雕广告",
-    description: "海河牛奶豁出去了，天津人的精神状态太猛了",
-    coverUrl: "/ai-videos/4.jpg",
-    videoUrl: "/ai-videos/4.mp4",
-    orientation: "portrait",
-  },
-  {
-    id: "bingmayong",
-    title: "兵马俑直播带货",
-    description: "AIGC短片《兵马俑的卖货日记》，穿越2000多年的兵马俑卖起了长生不老丹",
-    coverUrl: "/ai-videos/5.jpg",
-    videoUrl: "/ai-videos/5.mp4",
-    orientation: "portrait",
-  },
-  {
-    id: "trump-no-kings",
-    title: "Trump mocks 'No Kings' protests",
-    description: "Trump mocks 'No Kings' protests with shocking AI videos",
-    coverUrl: "/ai-videos/6.jpg",
-    videoUrl: "/ai-videos/6.mp4",
-    orientation: "landscape",
-  },
-  {
-    id: "time-traveler",
-    title: "时间旅行者的 VLOG",
-    description: "时间旅行者的 VLOG",
-    coverUrl: "/ai-videos/7.jpg",
-    videoUrl: "/ai-videos/8.mp4",
-    orientation: "landscape",
-  },
-  {
-    id: "lunch-rush",
-    title: "距离下课还有10秒",
-    description: "距离下课还有10秒，食堂还没做好饭怎么办？",
-    coverUrl: "/ai-videos/8.jpg",
-    videoUrl: "/ai-videos/9.mp4",
-    orientation: "landscape",
-  },
-];
+function generateStats(id: string) {
+  const seed = seededRandom(id);
+  const likes = 50 + (seed % 1950);
+  const stars = 10 + ((seed >> 8) % 490);
+  return { likes, stars };
+}
+
+function formatNumber(num: number) {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "k";
+  }
+  return num.toString();
+}
+
+// 初始化所有 video 的基础统计数据
+const initialStats = videoItems.reduce((acc, v) => {
+  acc[v.id] = generateStats(v.id);
+  return acc;
+}, {} as Record<string, { likes: number; stars: number }>);
 
 function VideoCard({
   video,
   index,
-  onPlay,
+  isLiked,
+  isStarred,
+  onLike,
+  onStar,
 }: {
   video: VideoItem;
   index: number;
-  onPlay: (video: VideoItem) => void;
+  isLiked: boolean;
+  isStarred: boolean;
+  onLike: (e: React.MouseEvent) => void;
+  onStar: (e: React.MouseEvent) => void;
 }) {
+  const baseStats = initialStats[video.id];
+  const displayLikes = baseStats.likes + (isLiked ? 1 : 0);
+  const displayStars = baseStats.stars + (isStarred ? 1 : 0);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -96,111 +63,101 @@ function VideoCard({
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group glass-holographic rounded-2xl border border-glass-border overflow-hidden cursor-pointer"
-      onClick={() => onPlay(video)}
     >
-      <div className="relative bg-void/60 overflow-hidden">
-        <img
-          src={video.coverUrl}
-          alt={`${video.title} cover`}
-          loading="lazy"
-          decoding="async"
-          className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.05] ${
-            video.orientation === "portrait" ? "aspect-[3/4]" : "aspect-video"
-          }`}
-        />
+      <Link href={`/videos/${video.id}`} className="block">
+        <div className="relative bg-void/60 overflow-hidden">
+          <img
+            src={video.coverUrl}
+            alt={`${video.title} cover`}
+            loading="lazy"
+            decoding="async"
+            className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.05] ${
+              video.orientation === "portrait" ? "aspect-[3/4]" : "aspect-video"
+            }`}
+          />
 
-        {/* Play Button Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-void/80 via-void/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <button
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300"
-        >
-          <div
-            className="relative w-16 h-16 rounded-full flex items-center justify-center bg-accent/90 backdrop-blur-sm hover:scale-110 transition-transform"
-            style={{
-              boxShadow:
-                "0 0 30px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 212, 255, 0.3)",
-            }}
-          >
-            <Play className="w-7 h-7 text-void ml-1" />
+
+          {/* 底部显示爱心和星星，悬停时显示 */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={onLike}
+                className="flex items-center gap-1.5 transition-transform hover:scale-110 active:scale-95"
+              >
+                <Heart
+                  className={`w-5 h-5 transition-colors duration-200 ${
+                    isLiked
+                      ? "text-pink-500 fill-pink-500"
+                      : "text-white/80 hover:text-pink-400"
+                  }`}
+                />
+                <span className={`font-mono text-sm font-medium ${isLiked ? "text-pink-400" : "text-white/80"}`}>
+                  {formatNumber(displayLikes)}
+                </span>
+              </button>
+              <button
+                onClick={onStar}
+                className="flex items-center gap-1.5 transition-transform hover:scale-110 active:scale-95"
+              >
+                <Star
+                  className={`w-5 h-5 transition-colors duration-200 ${
+                    isStarred
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-white/80 hover:text-yellow-300"
+                  }`}
+                />
+                <span className={`font-mono text-sm font-medium ${isStarred ? "text-yellow-400" : "text-white/80"}`}>
+                  {formatNumber(displayStars)}
+                </span>
+              </button>
+            </div>
           </div>
-        </button>
-      </div>
+        </div>
 
-      <div className="p-4">
-        <h3 className="font-heading text-sm font-semibold text-white truncate">
-          {video.title}
-        </h3>
-        <p className="mt-1 text-xs text-text-muted line-clamp-2">
-          {video.description}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-function VideoModal({
-  video,
-  onClose,
-}: {
-  video: VideoItem;
-  onClose: () => void;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-void/90 backdrop-blur-md p-4"
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className={`relative glass-holographic rounded-2xl border border-glass-border overflow-hidden ${
-          video.orientation === "portrait" ? "max-w-md" : "max-w-4xl"
-        } w-full`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full glass border border-glass-border flex items-center justify-center hover:border-accent/50 transition-colors"
-        >
-          <X className="w-5 h-5 text-white" />
-        </button>
-
-        {/* Video */}
-        <video
-          ref={videoRef}
-          src={video.videoUrl}
-          controls
-          autoPlay
-          playsInline
-          className={`w-full ${
-            video.orientation === "portrait"
-              ? "max-h-[80vh] object-contain"
-              : "aspect-video object-cover"
-          }`}
-        />
-
-        {/* Info */}
         <div className="p-4">
-          <h3 className="font-heading text-lg font-semibold text-white">
+          <h3 className="font-heading text-sm font-semibold text-white truncate">
             {video.title}
           </h3>
-          <p className="mt-1 text-sm text-text-muted">{video.description}</p>
+          <p className="mt-1 text-xs text-text-muted line-clamp-2">
+            {video.description}
+          </p>
         </div>
-      </motion.div>
+      </Link>
     </motion.div>
   );
 }
 
 export default function AIVideoGallery() {
-  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
+  const [likedVideos, setLikedVideos] = useState<Set<string>>(new Set());
+  const [starredVideos, setStarredVideos] = useState<Set<string>>(new Set());
+
+  const handleLike = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikedVideos((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  const handleStar = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setStarredVideos((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   // Separate portrait and landscape videos
   const portraitVideos = videoItems.filter((v) => v.orientation === "portrait");
@@ -209,61 +166,57 @@ export default function AIVideoGallery() {
   );
 
   return (
-    <>
-      <section id="video" className="relative py-24">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-end justify-between gap-6 mb-10">
-              <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
-                  <Video className="w-4 h-4 text-accent" />
-                  <span className="font-mono text-sm text-text-secondary">
-                    AI Generated
-                  </span>
-                </div>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight">
-                  AI Video Lab
-                </h2>
-                <p className="mt-3 text-text-secondary max-w-2xl">
-                  探索由AI生成的视频作品，见证人工智能在视频创作领域的无限可能。
-                </p>
+    <section id="video" className="relative py-24">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-end justify-between gap-6 mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
+                <Video className="w-4 h-4 text-accent" />
+                <span className="font-mono text-sm text-text-secondary">
+                  AI Generated
+                </span>
               </div>
-            </div>
-
-            {/* Portrait Videos - 5 columns grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
-              {portraitVideos.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  index={index}
-                  onPlay={setSelectedVideo}
-                />
-              ))}
-            </div>
-
-            {/* Landscape Videos - 3 columns grid to align with 5 portrait videos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {landscapeVideos.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  index={portraitVideos.length + index}
-                  onPlay={setSelectedVideo}
-                />
-              ))}
+              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight">
+                AI Video Lab
+              </h2>
+              <p className="mt-3 text-text-secondary max-w-2xl">
+                探索由AI生成的视频作品，见证人工智能在视频创作领域的无限可能。
+              </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Video Modal */}
-      {selectedVideo && (
-        <VideoModal
-          video={selectedVideo}
-          onClose={() => setSelectedVideo(null)}
-        />
-      )}
-    </>
+          {/* Portrait Videos - 5 columns grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
+            {portraitVideos.map((video, index) => (
+              <VideoCard
+                key={video.id}
+                video={video}
+                index={index}
+                isLiked={likedVideos.has(video.id)}
+                isStarred={starredVideos.has(video.id)}
+                onLike={(e) => handleLike(e, video.id)}
+                onStar={(e) => handleStar(e, video.id)}
+              />
+            ))}
+          </div>
+
+          {/* Landscape Videos - 3 columns grid to align with 5 portrait videos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {landscapeVideos.map((video, index) => (
+              <VideoCard
+                key={video.id}
+                video={video}
+                index={portraitVideos.length + index}
+                isLiked={likedVideos.has(video.id)}
+                isStarred={starredVideos.has(video.id)}
+                onLike={(e) => handleLike(e, video.id)}
+                onStar={(e) => handleStar(e, video.id)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

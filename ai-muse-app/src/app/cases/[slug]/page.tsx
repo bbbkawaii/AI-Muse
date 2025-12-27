@@ -16,7 +16,7 @@ import CaseComments from "@/components/CaseComments";
 // 前三个 case 默认折叠详情
 const collapsedByDefaultSlugs = ["christmas-tree", "soul-nebula", "earth-saturn"];
 
-type RouteParams = { slug: string };
+type RouteParams = Promise<{ slug: string }>;
 
 async function readSourceFiles(sourceFiles: CaseSourceFile[] | undefined) {
   if (!sourceFiles?.length) return [];
@@ -43,7 +43,7 @@ async function readSourceFiles(sourceFiles: CaseSourceFile[] | undefined) {
 export default async function CasePage({
   params,
 }: {
-  params: RouteParams | Promise<RouteParams>;
+  params: RouteParams;
 }) {
   const { slug } = await params;
   const showcaseCase = getShowcaseCase(slug);
